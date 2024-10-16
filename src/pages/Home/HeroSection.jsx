@@ -62,7 +62,8 @@ const HeroSection = () => {
                 //   onClick={() => handleCopy(stateData?.walletAddress)}
               />
             </div>
-
+            
+            
             <div className="w-full lg:w-[50%] flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
               <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
@@ -114,7 +115,7 @@ const HeroSection = () => {
                   // onClick={handleRegister}
                   type="submit"
                   className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black text-xl font-bold py-4 px-4 sm:px-6 
-            rounded-lg shadow-lg hover:shadow-xl transition-all w-full"
+                             rounded-lg shadow-lg hover:shadow-xl transition-all w-full"
                 >
                   Withdraw
                 </button>

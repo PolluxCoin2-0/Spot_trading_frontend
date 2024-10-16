@@ -1,4 +1,18 @@
+// import polluxWeb from "polluxweb";
+
 const Register = () => {
+  // const PolluxWeb = new polluxWeb({
+  //   fullHost: "https://testnet-fullnode.poxscan.io/",
+
+  // });
+
+  // const address =await PolluxWeb.contract().at(
+  //   "PApFeUXaX7jjHu3RQcwvgzy1tCwt3G9Q42"
+  // );
+
+  // const handleRegister = async()=>{
+
+  // }
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4">
       <div
