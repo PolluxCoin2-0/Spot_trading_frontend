@@ -1,31 +1,73 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { setNetwork, setWalletAddress } from "../../redux/slice";
+import { setDataObject, setNetwork, setWalletAddress } from "../../redux/slice";
+import polluxWeb from "polluxweb";
+import { useState } from "react";
+const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
 const Login = () => {
+   const [myAddress, setMyAddress] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
-  const walletAddress = useSelector((state) => state.wallet.address);
 
-  // connect wallet function
-  async function getPolinkweb() {
-    if (walletAddress) {
-      return toast.error("Wallet is already connected");
-    }
-
-    var obj = setInterval(async () => {
+  // Connect wallet function
+async function getPolinkweb() {
+  return new Promise((resolve, reject) => {
+    const obj = setInterval(async () => {
       if (window.pox) {
         clearInterval(obj);
-        const detailsData = JSON.stringify(await window.pox.getDetails());
-        const parsedDetailsObject = JSON.parse(detailsData);
-        console.log(parsedDetailsObject);
-        dispatch(setWalletAddress(parsedDetailsObject[1].data?.wallet_address));
-        dispatch(setNetwork(parsedDetailsObject[1].data?.Network));
-        navigate("/herosection");
+        try {
+          const detailsData = JSON.stringify(await window.pox.getDetails());
+          const parsedDetailsObject = JSON.parse(detailsData);
+          resolve(parsedDetailsObject[1].data?.wallet_address);
+        } catch (error) {
+          reject("Failed to get wallet address");
+        }
       }
-    }, 1000);
+    }, 100);
+  });
+}
+
+const handleLogin = async () => {
+  try {
+    const walletAddress = await getPolinkweb(); // Ensure we have the wallet address
+    if (!walletAddress) {
+      toast.error("Failed to retrieve wallet address");
+      return;
+    }
+
+    console.log("Got wallet address", walletAddress);
+
+    const PolluxWeb = new polluxWeb({
+      fullHost: "https://testnet-fullnode.poxscan.io",
+      privateKey:
+        "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
+    });
+
+    const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
+    const isMyAddressRegistered = await address.user(walletAddress).call();
+
+    if (
+      isMyAddressRegistered.userAddress ==
+      "370000000000000000000000000000000000000000"
+    ) {
+      toast.error("User is already registered");
+      return;
+    }
+
+    // Dispatch data to the Redux store
+    dispatch(setDataObject(isMyAddressRegistered));
+
+    // Navigate to the hero section
+    navigate("/herosection");
+    
+  } catch (error) {
+    console.error("An error occurred:", error);
+    toast.error("An error occurred during login");
   }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4">
@@ -56,7 +98,7 @@ const Login = () => {
           <button
             className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3 px-4 sm:px-6 rounded-full
              shadow-lg hover:shadow-xl transition-all w-full md:w-1/2"
-            onClick={getPolinkweb}
+            onClick={handleLogin}
           >
             Connect Wallet
           </button>

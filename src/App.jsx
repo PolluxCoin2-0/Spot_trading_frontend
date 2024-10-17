@@ -6,14 +6,14 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "./layout/Navbar";
+
 
 function App() {
   return (
     <div>
       <Provider store={store}>
         <Router>
-        <Navbar/>
+     
         <ToastContainer
         position="top-right"
         autoClose={3000}

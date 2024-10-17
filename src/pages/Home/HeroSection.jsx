@@ -2,10 +2,27 @@ import { FaCopy } from "react-icons/fa6";
 import usdxImg from "../../assets/usdx.png";
 import CountdownTimer from "../../component/CountDownTimer";
 import TransactionRecord from "./TransactionRecord";
+import Navbar from "../../layout/Navbar";
+import polluxWeb from "polluxweb";
+import { useSelector } from "react-redux";
 
 const HeroSection = () => {
+  const dataArray = useSelector((state) => state?.wallet?.dataObject);
+  console.log(dataArray);
+
+  const SPOT_ADDRESS = import.meta.env.VITE_Spot;
+
+  const PolluxWeb = new polluxWeb({
+    fullHost: "https://testnet-fullnode.poxscan.io",
+    privateKey:
+      "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
+  });
+
   return (
     <div>
+      <div>
+        <Navbar />
+      </div>
       <div className="bg-black h-auto pt-12">
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
@@ -13,7 +30,7 @@ const HeroSection = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
-                Referral Link: dvlkjvflsdkjvjksgheryhghghghedtdfgdglscdc
+                Referral Link: {dataArray?.[0]?.userAddress}
                 {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
               </p>
               <FaCopy
@@ -26,7 +43,7 @@ const HeroSection = () => {
 
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
-                Contract Address: dvlkjvflsdkjvjksgheryhghghghedtdfgdglscdc
+                Contract Address: {SPOT_ADDRESS}
                 {/* Contract Address: {CONTRACT_ADDRESS} */}
               </p>
               <FaCopy
@@ -57,19 +74,18 @@ const HeroSection = () => {
                 //   onClick={() => handleCopy(stateData?.walletAddress)}
               />
             </div>
-            
-            
+
             <div className="w-full lg:w-[50%] flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
               <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  $20
+                  {Number(dataArray?.[0]?.availableBalance?._hex)}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>
 
               <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  $20
+                  {Number(dataArray?.[0]?.claimedBalance?._hex)}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>

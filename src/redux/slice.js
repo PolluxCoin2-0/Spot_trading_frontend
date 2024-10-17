@@ -9,11 +9,15 @@ const walletSlice = createSlice({
     signup: false,
     newPassword: false,
     forgotPassword : false,
+    dataObject: [],
     
   },
   reducers: {
     setWalletAddress: (state, action) => {
       state.address = action.payload;
+    },
+    setDataObject: (state, action) => {
+    state.dataObject.push(action.payload);
     },
     setNetwork: (state, action) => {
       state.Network = action.payload;
@@ -30,10 +34,11 @@ const walletSlice = createSlice({
     setForgotPassword: (state, action) => {
       state.forgotPassword = action.payload;
     },
+
     
   },
 });
 
-export const { setWalletAddress, setNetwork, setLogin, setSignup, setNewPassword, setForgotPassword, setRegister } =
+export const { setWalletAddress, setNetwork, setLogin, setSignup, setNewPassword, setForgotPassword, setRegister,setDataObject } =
   walletSlice.actions;
 export default walletSlice.reducer;
