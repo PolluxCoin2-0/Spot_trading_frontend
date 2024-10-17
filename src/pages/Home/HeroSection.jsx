@@ -1,4 +1,3 @@
-import Navbar from "../../layout/Navbar";
 import { FaCopy } from "react-icons/fa6";
 import usdxImg from "../../assets/usdx.png";
 import CountdownTimer from "../../component/CountDownTimer";
@@ -7,10 +6,6 @@ import TransactionRecord from "./TransactionRecord";
 const HeroSection = () => {
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
-
       <div className="bg-black h-auto pt-12">
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
