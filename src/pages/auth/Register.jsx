@@ -2,7 +2,7 @@ import polluxWeb from "polluxweb";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-// import { encodeParams } from "../../utils/approvalFunction";
+import { encodeParams } from "../../utils/approvalFunction";
 import { getPolinkweb } from "../../utils/connectWallet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,15 +20,15 @@ const Register = () => {
   const location = useLocation();
   const referralAddressFromApp = location.state?.referralAddress;
 
-  useEffect(()=>{
-    if(referralAddressFromApp.length>0){
+  useEffect(() => {
+    if (referralAddressFromApp) {
       setReferralAddress(referralAddressFromApp);
       toast.success("Referral Code Applied Successfully");
     }
-  },[])
+  }, []);
 
   const handleWalletAddress = async () => {
-    if(loading){
+    if (loading) {
       return;
     }
 
@@ -46,74 +46,81 @@ const Register = () => {
       "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
   });
 
-   const handleRegister = async () => {
-     try {
-    // Both feilds are not empty
-     if (!myAddress || !referralAddress) {
-       toast.error("Enter values in both fields.");
-       return;
-     }
+  const handleRegister = async () => {
+    try {
+      // Both feilds are not empty
+      if (!myAddress || !referralAddress) {
+        toast.error("Enter values in both fields.");
+        return;
+      }
 
-    const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
-    const isMyAddressRegistered = await address.user(myAddress).call();
-   if (
-     isMyAddressRegistered.userAddress !=
-      "370000000000000000000000000000000000000000"
-    ) {
-      toast.error("user is already registered");
-      return;
-  }
+      const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
+      const isMyAddressRegistered = await address.user(myAddress).call();
+      console.log(isMyAddressRegistered);
 
-     // Check entered referral address is registred or not
-    const isReferralAddressRegistered = await address
-      .user(referralAddress)
-      .call();
-  if (
-     !isReferralAddressRegistered.userAddress ===
-     "370000000000000000000000000000000000000000"
-    ) {
-      toast.error("Entered Referral Address is not registered!");
+      if (
+        isMyAddressRegistered.userAddress !=
+        "370000000000000000000000000000000000000000"
+      ) {
+        toast.error("user is already registered");
+        return;
+      }
+
+      // Check entered referral address is registred or not
+      const isReferralAddressRegistered = await address
+        .user(referralAddress)
+        .call();
+      if (
+        !isReferralAddressRegistered.userAddress ===
+        "370000000000000000000000000000000000000000"
+      ) {
+        toast.error("Entered Referral Address is not registered!");
         return;
       }
 
       const approvalRawData = await rawTxnApprove(SPOT_ADDRESS);
-    const rawD = await rawDatApprove(approvalRawData);
+      const rawD = await rawDatApprove(approvalRawData);
       if (window.pox) {
-      const signedData1 = await window.pox.signdata(rawD);
-      console.log({ signedData1 });
-      if (signedData1[0]) {
-        let a = JSON.parse(signedData1[1]);
-       const broadcast1 = await PolluxWeb.trx.sendRawTransaction(a);
-      toast.success("Approve Txn Done...!");
-     console.log({ broadcast1 });
-    } else {
-     toast.error("error in data");
-   }
-   } else {
-     toast.error("Download Polink Extension");
-     return;
-   }
-   const t = await rawTxnApprove(referralAddress);
-    const rawData = await rawDataRegister(t);
-       if (window.pox) {
-     const signedData2 = await window.pox.signdata(rawData);
-     console.log({ signedData2 });
-     if (signedData2[0]) {
-       let a = JSON.parse(signedData2[1]);
-       await PolluxWeb.trx.sendRawTransaction(a);
-      toast.success("Registration Done...!");
-       dispatch(setDataObject(isMyAddressRegistered));
-     navigate("/heroSection");
-   } else {
-     toast.error("error in data");
-     }
-  } else {
-      toast.error("Download Polink Extension");
-     return;
-   }
-   } catch (error) {
-     console.log(error);
-   }
+        const signedData1 = await window.pox.signdata(rawD);
+        console.log({ signedData1 });
+        if (signedData1[0]) {
+          let a = JSON.parse(signedData1[1]);
+          const broadcast1 = await PolluxWeb.trx.sendRawTransaction(a);
+          toast.success("Approve Txn Done...!");
+          console.log({ broadcast1 });
+        } else {
+          toast.error("error in data");
+        }
+      } else {
+        toast.error("Download Polink Extension");
+        return;
+      }
+
+      const t = await rawTxnApprove(referralAddress);
+      const rawData = await rawDataRegister(t);
+      if (window.pox) {
+        const signedData2 = await window.pox.signdata(rawData);
+        console.log({ signedData2 });
+        if (signedData2[0]) {
+          let a = JSON.parse(signedData2[1]);
+          await PolluxWeb.trx.sendRawTransaction(a);
+          console.log({ a });
+          toast.success("Registration Done...!");
+
+          // setDataObject
+          dispatch(setDataObject(isMyAddressRegistered));
+
+          navigate("/heroSection");
+        } else {
+          toast.error("error in data");
+        }
+      } else {
+        toast.error("Download Polink Extension");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const rawDatApprove = async (params) => {
@@ -214,7 +221,7 @@ const Register = () => {
           />
 
           <button
-            // onClick={handleRegister}
+            onClick={handleRegister}
             type="submit"
             className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3 px-4 sm:px-6 
             rounded-full shadow-lg hover:shadow-xl transition-all w-full"

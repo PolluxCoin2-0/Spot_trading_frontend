@@ -37,7 +37,7 @@ const handleLogin = async () => {
       return;
     }
 
-    console.log("Got wallet address", walletAddress);
+    // console.log("Got wallet address", walletAddress);
 
     const PolluxWeb = new polluxWeb({
       fullHost: "https://testnet-fullnode.poxscan.io",
@@ -52,10 +52,10 @@ const handleLogin = async () => {
       isMyAddressRegistered.userAddress ==
       "370000000000000000000000000000000000000000"
     ) {
-      toast.error("User is already registered");
+      toast.error("User is not already registered");
       return;
     }
-
+    // console.log({isMyAddressRegistered})
     // Dispatch data to the Redux store
     dispatch(setDataObject(isMyAddressRegistered));
 

@@ -7,13 +7,12 @@ import polluxWeb from "polluxweb";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
+
 const HeroSection = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
-  console.log(dataArray);
-
+  // console.log({dataArray} );
 
   const PolluxWeb = new polluxWeb({
     fullHost: "https://testnet-fullnode.poxscan.io",
@@ -22,16 +21,16 @@ const HeroSection = () => {
   });
 
   const handleContractCopy = () => {
-      const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
-      navigator.clipboard.writeText(contractLink);
-      toast.success("Contract Link is copied.");
-  }
+    const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
+    navigator.clipboard.writeText(contractLink);
+    toast.success("Contract Link is copied.");
+  };
 
   const handleReferralCopy = (walletAddress) => {
     const referralLink = REFERRAL_BASE_URL + `/referral/${walletAddress}`;
     navigator.clipboard.writeText(referralLink);
     toast.success("Referral Link is copied.");
-  }
+  };
 
   return (
     <div>
@@ -45,25 +44,28 @@ const HeroSection = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
-                Referral Link: {dataArray?.[0]?.userAddress}
+                Referral Link: {PolluxWeb.address.fromHex(dataArray?.[0]?.[1])}
                 {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
               </p>
               <FaCopy
                 color="white"
                 size={24}
                 className="cursor-pointer"
-                 onClick={() => handleReferralCopy("P9eGAatKo4qiEBByvCWSVDrysw9uDCS8Zn")}
+                onClick={() =>
+                  handleReferralCopy(
+                    PolluxWeb.address.fromHex(dataArray?.[0]?.[1])
+                  )
+                }
               />
             </div>
 
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
-              <p className="text-[#8A8A8A] font-medium truncate"
-              >
+              <p className="text-[#8A8A8A] font-medium truncate">
                 Contract Address: {SPOT_ADDRESS}
                 {/* Contract Address: {CONTRACT_ADDRESS} */}
               </p>
               <FaCopy
-              onClick={handleContractCopy}
+                onClick={handleContractCopy}
                 color="white"
                 size={24}
                 className="cursor-pointer"
@@ -74,11 +76,13 @@ const HeroSection = () => {
 
         {/* l/R Address,available balance and claim balance */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24">
+        
+          <div className=" flex flex-col lg:flex-row justify-between items-center space-x-0 lg:space-x-8 xl:space-x-10 w-full">
+            <div className="w-full lg:w-[50%]">
           <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 ">
             Left Right Address
           </p>
-          <div className=" flex flex-col lg:flex-row justify-between space-x-0 lg:space-x-8 xl:space-x-10 w-full">
-            <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-full lg:w-[50%] shadow-inner shadow-[#464545]">
+            <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
               <p className="text-white font-medium truncate text-xl ">
                 **********************
                 {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
@@ -90,21 +94,36 @@ const HeroSection = () => {
                 //   onClick={() => handleCopy(stateData?.walletAddress)}
               />
             </div>
+            </div>
 
             <div className="w-full lg:w-[50%] flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
-              <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
+               <div className="w-1/2">
+              <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 ">
+               Available Balance
+              </p> 
+              <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  {dataArray?.[0]?.availableBalance?._hex ? Number(dataArray?.[0]?.availableBalance?._hex):0}
+                  {dataArray?.[0]?.[14]?._hex
+                    ? Number(dataArray?.[0]?.[14]?._hex)
+                    : 0}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>
+               </div> 
 
-              <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
+               <div className="w-1/2">
+               <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 ">
+               Claimed Balance
+              </p> 
+              <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  {dataArray?.[0]?.claimedBalance?._hex ? Number(dataArray?.[0]?.claimedBalance?._hex):0}
+                  {dataArray?.[0]?.[15]?._hex
+                    ? Number(dataArray?.[0]?.[15]?._hex)
+                    : 0}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>
+              </div> 
             </div>
           </div>
         </div>
@@ -116,21 +135,24 @@ const HeroSection = () => {
               MATRIX DETAILS
             </p>
             <div className=" p-8">
-              <p className="text-[#8A8A8A] font-semibold text-lg ">
-                Min $10 Max $200.....
+              <p className="text-[#8A8A8A] font-semibold text-xl  ">
+                Matrix Details :{" "}
+                {dataArray?.[0]?.[10]?._hex
+                  ? Number(dataArray?.[0]?.[10]?._hex)
+                  : 0}
               </p>
-              <p className="text-[#8A8A8A] font-semibold text-lg pt-4">
+              {/* <p className="text-[#8A8A8A] font-semibold text-lg pt-4">
                 Min $10 Max $200.....
-              </p>
+              </p> */}
             </div>
           </div>
 
           <div className="w-full md:w-[50%] bg-[#151515]  rounded-3xl pb-8 shadow-inner shadow-[#464545] mt-6 md:mt-0">
-            <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-3 pb-3 shadow-inner shadow-[#464545]">
+            <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-2 pb-3 shadow-inner shadow-[#464545]">
               WITHDRAW
             </p>
             <div className="p-8 md:p-4 lg:p-8 flex flex-col md:flex-row justify-between space-x-0 md:space-x-3 lg:space-x-6 items-center w-full mt-4">
-              <div className="w-full md:w-[40%] xl:w-[20%] flex flex-row items-center justify-center space-x-2 bg-[#1a1919] pt-2 pb-2 rounded-lg">
+              <div className="w-full md:w-[40%] xl:w-[20%] flex flex-row items-center justify-center space-x-2 bg-[#1a1919] pt-1 pb-1 rounded-lg">
                 <p>
                   <img src={usdxImg} alt="" className="" />
                 </p>

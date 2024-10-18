@@ -1,19 +1,41 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
 
 const CountdownTimer = () => {
-  // Initial countdown time in seconds (48 hours)
-  const initialTime = 48 * 60 * 60;
+  const dataArray = useSelector((state) => state?.wallet?.dataObject);
+  // console.log({ dataArray });
 
+  // Extract the timestamp indicating when 48 hours is completed
+  const timestampHex = dataArray?.[0]?.[6]?.hex;
+  const originalTimestamp = timestampHex ? Number(timestampHex) : 0; // Convert from hex to number
+
+  // Add 48 hours (172,800 seconds) to the target timestamp
+  const targetTimestamp = originalTimestamp + 172800;
+
+  // Get the current time in seconds
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  // Calculate the time left (in seconds) until the target timestamp
+  const initialTime = targetTimestamp > currentTime ? targetTimestamp - currentTime : 0;
+
+  // State to hold the remaining time
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
+    // Update timeLeft when the targetTimestamp changes
+    setTimeLeft(initialTime);
+
+    // If there's no time left, don't start the timer
+    if (initialTime === 0) return;
+
+    // Start the timer
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
 
-    // Clear the interval when component is unmounted
+    // Clear the interval when component unmounts
     return () => clearInterval(timer);
-  }, []);
+  }, [initialTime]); // Depend on initialTime
 
   // Convert seconds to hours, minutes, and seconds
   const formatTime = (seconds) => {
@@ -31,20 +53,19 @@ const CountdownTimer = () => {
   const { hours, minutes, seconds } = formatTime(timeLeft);
 
   return (
-    <div className="flex justify-center items-center space-x-4 p-4  text-white rounded-lg mt-16 mb-10">
-      <div className="flex flex-col items-center">
-        <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{hours}</span>
-        {/* <span className="text-sm">Hours</span> */}
-      </div>
-      <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
-      <div className="flex flex-col items-center">
-        <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{minutes}</span>
-        {/* <span className="text-sm">Minutes</span> */}
-      </div>
-      <span className="text-5xl md:text-6xl xl:text-7xl  font-bold">:</span>
-      <div className="flex flex-col items-center">
-        <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{seconds}</span>
-        {/* <span className="text-sm">Seconds</span> */}
+    <div className="flex flex-col items-center">
+      <div className="flex justify-center items-center space-x-4 p-4 text-white rounded-lg mt-16 mb-10">
+        <div className="flex flex-col items-center">
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{hours}</span>
+        </div>
+        <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
+        <div className="flex flex-col items-center">
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{minutes}</span>
+        </div>
+        <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
+        <div className="flex flex-col items-center">
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{seconds}</span>
+        </div>
       </div>
     </div>
   );
