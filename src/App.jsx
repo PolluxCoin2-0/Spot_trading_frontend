@@ -1,37 +1,54 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "../src/pages/auth/Login";
 import Register from "../src/pages/auth/Register";
 import HeroSection from "../src/pages/Home/HeroSection";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store, persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useEffect } from "react";
+import { Provider } from "react-redux";
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Redirect to register if referral link detected
+    if (location.pathname.startsWith("/referral/")) {
+      const referralAddress = location.pathname.split("/")[2];
+      navigate("/register", { state: { referralAddress } });
+    }
+  }, [location, navigate]);
+
   return (
-    <div>
-      <Provider store={store}>
-        <Router>
-     
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <div>
         <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        theme="dark"
-        newestOnTop={true}
-        pauseOnFocusLoss
-        toastClassName="custom-toast"
-      />
-          <Routes>
-            <Route path="/" element={<HeroSection />} />
-            <Route path="/herosection" element={<HeroSection />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </Router>
+          position="top-right"
+          autoClose={3000}
+          theme="dark"
+          newestOnTop={true}
+          pauseOnFocusLoss
+          toastClassName="custom-toast"
+        />
+        <Routes>
+          <Route path="/" element={<HeroSection />} />
+          <Route path="/herosection" element={<HeroSection />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
+      </PersistGate>
       </Provider>
-    </div>
   );
 }
 
-export default App;
+export default function MainApp() {
+  return (
+    <Router>
+      <App />
+    </Router>
+  );
+}

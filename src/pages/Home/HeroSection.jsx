@@ -5,18 +5,33 @@ import TransactionRecord from "./TransactionRecord";
 import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
+
+const SPOT_ADDRESS = import.meta.env.VITE_Spot;
+const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 const HeroSection = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
   console.log(dataArray);
 
-  const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
   const PolluxWeb = new polluxWeb({
     fullHost: "https://testnet-fullnode.poxscan.io",
     privateKey:
       "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
   });
+
+  const handleContractCopy = () => {
+      const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
+      navigator.clipboard.writeText(contractLink);
+      toast.success("Contract Link is copied.");
+  }
+
+  const handleReferralCopy = (walletAddress) => {
+    const referralLink = REFERRAL_BASE_URL + `/referral/${walletAddress}`;
+    navigator.clipboard.writeText(referralLink);
+    toast.success("Referral Link is copied.");
+  }
 
   return (
     <div>
@@ -37,20 +52,21 @@ const HeroSection = () => {
                 color="white"
                 size={24}
                 className="cursor-pointer"
-                //   onClick={() => handleCopy(stateData?.walletAddress)}
+                 onClick={() => handleReferralCopy("P9eGAatKo4qiEBByvCWSVDrysw9uDCS8Zn")}
               />
             </div>
 
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
-              <p className="text-[#8A8A8A] font-medium truncate">
+              <p className="text-[#8A8A8A] font-medium truncate"
+              >
                 Contract Address: {SPOT_ADDRESS}
                 {/* Contract Address: {CONTRACT_ADDRESS} */}
               </p>
               <FaCopy
+              onClick={handleContractCopy}
                 color="white"
                 size={24}
                 className="cursor-pointer"
-                //   onClick={() => handleCopy("PR4fchA4kPy2m7HWuSiEcFz714cAnQcME9")}
               />
             </div>
           </div>
@@ -78,14 +94,14 @@ const HeroSection = () => {
             <div className="w-full lg:w-[50%] flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
               <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  {Number(dataArray?.[0]?.availableBalance?._hex)}
+                  {dataArray?.[0]?.availableBalance?._hex ? Number(dataArray?.[0]?.availableBalance?._hex):0}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>
 
               <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl w-1/2 shadow-inner shadow-[#464545]">
                 <p className="text-white font-bold truncate text-2xl">
-                  {Number(dataArray?.[0]?.claimedBalance?._hex)}
+                  {dataArray?.[0]?.claimedBalance?._hex ? Number(dataArray?.[0]?.claimedBalance?._hex):0}
                   {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
                 </p>
               </div>
