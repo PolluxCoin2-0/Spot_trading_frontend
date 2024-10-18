@@ -68,43 +68,46 @@ const TransactionRecord = () => {
       {/* Table */}
       <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20">
         <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-2 w-full">
-          <span className="text-white text-sm md:text-lg font-bold w-[30%]">FROM</span>
-          <span className="text-white text-sm md:text-lg font-bold w-[30%]">TO</span>
-          <span className="text-white text-sm md:text-lg font-bold w-[20%] ">AMOUNT</span>
-          <span className="text-white text-sm md:text-lg font-bold w-[20%] text-end">TYPE</span>
+          <span className="text-white text-sm md:text-lg font-bold w-[30%]">
+            FROM
+          </span>
+          <span className="text-white text-sm md:text-lg font-bold w-[30%]">
+            TO
+          </span>
+          <span className="text-white text-sm md:text-lg font-bold w-[20%] ">
+            AMOUNT
+          </span>
+          <span className="text-white text-sm md:text-lg font-bold w-[20%] text-end">
+            TYPE
+          </span>
         </div>
 
         {transactionsList.map((data, index) => (
-         <div
-         key={index}
-         className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
-       >
-         <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
-           {/* Shorten the address for mobile screens, show full address on larger screens */}
-           <span className="block md:hidden">
-             {shortenString(data.From, 3)}
-           </span>
-           <span className="hidden sm:block">
-             {data.From}
-           </span>
-         </span>
-         <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
-           {/* Shorten the address for mobile screens, show full address on larger screens */}
-           <span className="block sm:hidden">
-             {shortenString(data.To, 3)}
-           </span>
-           <span className="hidden sm:block">
-             {data.To}
-           </span>
-         </span>
-         <span className="text-[#8A8A8A] text-md font-semibold w-[20%]">
-           {data.Amount}
-         </span>
-         <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-end">
-           {data.Type}
-         </span>
-       </div>
-       
+          <div
+            key={index}
+            className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
+          >
+            <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
+              {/* Shorten the address for mobile screens, show full address on larger screens */}
+              <span className="block md:hidden">
+                {shortenString(data.From, 3)}
+              </span>
+              <span className="hidden sm:block">{data.From}</span>
+            </span>
+            <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
+              {/* Shorten the address for mobile screens, show full address on larger screens */}
+              <span className="block sm:hidden">
+                {shortenString(data.To, 3)}
+              </span>
+              <span className="hidden sm:block">{data.To}</span>
+            </span>
+            <span className="text-[#8A8A8A] text-md font-semibold w-[20%]">
+              {data.Amount}
+            </span>
+            <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-end">
+              {data.Type}
+            </span>
+          </div>
         ))}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { FaCopy } from "react-icons/fa6";
 import usdxImg from "../../assets/usdx.png";
-import CountdownTimer from "../../component/CountDownTimer";
+import CountdownTimer from "../../component/CountdownTimer";
 import TransactionRecord from "./TransactionRecord";
 import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
@@ -40,12 +40,11 @@ const HeroSection = () => {
       <div className="bg-black h-auto pt-12">
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
-          {/* Referral Link and Contract Address */}
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
                 Referral Link: {PolluxWeb.address.fromHex(dataArray?.[0]?.[1])}
-                {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
+               
               </p>
               <FaCopy
                 color="white"
@@ -62,7 +61,7 @@ const HeroSection = () => {
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
                 Contract Address: {SPOT_ADDRESS}
-                {/* Contract Address: {CONTRACT_ADDRESS} */}
+                
               </p>
               <FaCopy
                 onClick={handleContractCopy}
@@ -85,13 +84,13 @@ const HeroSection = () => {
             <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
               <p className="text-white font-medium truncate text-xl ">
                 **********************
-                {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
+              
               </p>
               <FaCopy
                 color="white"
                 size={24}
                 className="cursor-pointer"
-                //   onClick={() => handleCopy(stateData?.walletAddress)}
+              
               />
             </div>
             </div>
@@ -106,7 +105,7 @@ const HeroSection = () => {
                   {dataArray?.[0]?.[14]?._hex
                     ? Number(dataArray?.[0]?.[14]?._hex)
                     : 0}
-                  {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
+                  
                 </p>
               </div>
                </div> 
@@ -120,7 +119,7 @@ const HeroSection = () => {
                   {dataArray?.[0]?.[15]?._hex
                     ? Number(dataArray?.[0]?.[15]?._hex)
                     : 0}
-                  {/* {stateData?.walletAddress ? stateData?.walletAddress : ""} */}
+                
                 </p>
               </div>
               </div> 

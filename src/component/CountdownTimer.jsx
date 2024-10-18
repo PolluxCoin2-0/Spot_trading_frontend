@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const CountdownTimer = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
-  // console.log({ dataArray });
 
   // Extract the timestamp indicating when 48 hours is completed
   const timestampHex = dataArray?.[0]?.[6]?.hex;
@@ -16,7 +15,8 @@ const CountdownTimer = () => {
   const currentTime = Math.floor(Date.now() / 1000);
 
   // Calculate the time left (in seconds) until the target timestamp
-  const initialTime = targetTimestamp > currentTime ? targetTimestamp - currentTime : 0;
+  const initialTime =
+    targetTimestamp > currentTime ? targetTimestamp - currentTime : 0;
 
   // State to hold the remaining time
   const [timeLeft, setTimeLeft] = useState(initialTime);
@@ -44,9 +44,9 @@ const CountdownTimer = () => {
     const secs = seconds % 60;
 
     return {
-      hours: hours.toString().padStart(2, '0'),
-      minutes: minutes.toString().padStart(2, '0'),
-      seconds: secs.toString().padStart(2, '0'),
+      hours: hours.toString().padStart(2, "0"),
+      minutes: minutes.toString().padStart(2, "0"),
+      seconds: secs.toString().padStart(2, "0"),
     };
   };
 
@@ -56,15 +56,21 @@ const CountdownTimer = () => {
     <div className="flex flex-col items-center">
       <div className="flex justify-center items-center space-x-4 p-4 text-white rounded-lg mt-16 mb-10">
         <div className="flex flex-col items-center">
-          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{hours}</span>
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
+            {hours}
+          </span>
         </div>
         <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
         <div className="flex flex-col items-center">
-          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{minutes}</span>
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
+            {minutes}
+          </span>
         </div>
         <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
         <div className="flex flex-col items-center">
-          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">{seconds}</span>
+          <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
+            {seconds}
+          </span>
         </div>
       </div>
     </div>
