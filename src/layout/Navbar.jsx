@@ -8,7 +8,7 @@ const Navbar = () => {
     <div className="bg-[#151515] flex flex-row justify-between items-center px-6 md:px-8 lg:px-16 2xl:px-24 p-4">
       <div className="text-white text-2xl font-bold ">Logo</div>
 
-      <Link to="/login">
+      <Link to="/">
         <div>
           <button
             type="button"

@@ -34,9 +34,8 @@ function App() {
           toastClassName="custom-toast"
         />
         <Routes>
-          <Route path="/" element={<HeroSection />} />
           <Route path="/herosection" element={<HeroSection />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>
