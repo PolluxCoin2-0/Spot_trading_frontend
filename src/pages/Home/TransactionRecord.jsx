@@ -61,17 +61,17 @@ const TransactionRecord = () => {
 
   return (
     <div>
-      <p className="text-[#FFCF56] text-center text-3xl md:text-4xl font-bold pt-10 pb-10">
+      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10">
         Transactions Record
       </p>
 
       {/* Table */}
       <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20">
         <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-2 w-full">
-          <span className="text-white text-lg font-bold w-[30%]">FROM</span>
-          <span className="text-white text-lg font-bold w-[30%]">TO</span>
-          <span className="text-white text-lg font-bold w-[20%] ">AMOUNT</span>
-          <span className="text-white text-lg font-bold w-[20%] text-end">TYPE</span>
+          <span className="text-white text-sm md:text-lg font-bold w-[30%]">FROM</span>
+          <span className="text-white text-sm md:text-lg font-bold w-[30%]">TO</span>
+          <span className="text-white text-sm md:text-lg font-bold w-[20%] ">AMOUNT</span>
+          <span className="text-white text-sm md:text-lg font-bold w-[20%] text-end">TYPE</span>
         </div>
 
         {transactionsList.map((data, index) => (
