@@ -35,7 +35,7 @@ const CountdownTimer = () => {
 
     // Clear the interval when component unmounts
     return () => clearInterval(timer);
-  }, [initialTime,dataArray]); // Depend on initialTime
+  }, [initialTime, dataArray]); // Depend on initialTime
 
   // Convert seconds to hours, minutes, and seconds
   const formatTime = (seconds) => {

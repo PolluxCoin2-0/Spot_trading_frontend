@@ -1,5 +1,6 @@
 import { FaCopy } from "react-icons/fa6";
 import usdxImg from "../../assets/usdx.png";
+import LRImg from "../../assets/lrImg.png";
 import CountdownTimer from "../../component/CountdownTimer";
 import TransactionRecord from "./TransactionRecord";
 import Navbar from "../../layout/Navbar";
@@ -86,6 +87,7 @@ const HeroSection = () => {
                 **********************
               
               </p>
+              {/* <img src={LRImg} alt="left-right-nodes" className="" /> */}
               <FaCopy
                 color="white"
                 size={24}

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-
+import logo from "../assets/SpotLogo.png";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const walletAddress = useSelector((state) => state.wallet.address);
   return (
     <div className="bg-[#151515] flex flex-row justify-between items-center px-6 md:px-8 lg:px-16 2xl:px-24 p-4">
-      <div className="text-white text-2xl font-bold ">Logo</div>
+      <img src={logo} alt="" className="" />
 
       <Link to="/">
         <div>
