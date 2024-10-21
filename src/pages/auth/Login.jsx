@@ -8,6 +8,7 @@ const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
 const Login = () => {
    const [myAddress, setMyAddress] = useState("");
+   const [walletLoading, setWalletLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
 
@@ -30,7 +31,12 @@ async function getPolinkweb() {
 }
 
 const handleLogin = async () => {
+  if(walletLoading){
+    toast.warning("Login in progress....")
+    return;
+  }
   try {
+    setWalletLoading(true);
     const walletAddress = await getPolinkweb(); // Ensure we have the wallet address
     if (!walletAddress) {
       toast.error("Failed to retrieve wallet address");
@@ -58,6 +64,7 @@ const handleLogin = async () => {
     // console.log({isMyAddressRegistered})
     // Dispatch data to the Redux store
     dispatch(setDataObject(isMyAddressRegistered));
+    
 
     // Navigate to the hero section
     navigate("/herosection");
@@ -65,6 +72,9 @@ const handleLogin = async () => {
   } catch (error) {
     console.error("An error occurred:", error);
     toast.error("An error occurred during login");
+  }
+  finally {
+    setWalletLoading(false);
   }
 };
 

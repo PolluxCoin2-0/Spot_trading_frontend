@@ -24,13 +24,13 @@ const HeroSection = () => {
   const handleContractCopy = () => {
     const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
     navigator.clipboard.writeText(contractLink);
-    toast.success("Contract Link is copied.");
+    toast.success("Contract Link copied.");
   };
 
   const handleReferralCopy = (walletAddress) => {
     const referralLink = REFERRAL_BASE_URL + `/referral/${walletAddress}`;
     navigator.clipboard.writeText(referralLink);
-    toast.success("Referral Link is copied.");
+    toast.success("Referral Link copied.");
   };
 
   return (
