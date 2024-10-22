@@ -7,12 +7,14 @@ import { getPolinkweb } from "../../utils/connectWallet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDataObject } from "../../redux/slice";
+import Loader from "../../component/Loader";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const USDX_ADDRESS = import.meta.env.VITE_Usdx;
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const [registerLoading, setRegisterLoading] = useState(false);
   const [myAddress, setMyAddress] = useState("");
   const [referralAddress, setReferralAddress] = useState("");
   const navigate = useNavigate();
@@ -47,7 +49,13 @@ const Register = () => {
   });
 
   const handleRegister = async () => {
+    if(registerLoading){
+      toast.warning("Register in progress....")
+      return;
+    }
+
     try {
+      setRegisterLoading(true);
       // Both feilds are not empty
       if (!myAddress || !referralAddress) {
         toast.error("Enter values in both fields.");
@@ -120,6 +128,9 @@ const Register = () => {
       }
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setRegisterLoading(false);
     }
   };
 
@@ -222,11 +233,12 @@ const Register = () => {
 
           <button
             onClick={handleRegister}
+            disabled={registerLoading}
             type="submit"
             className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3 px-4 sm:px-6 
             rounded-full shadow-lg hover:shadow-xl transition-all w-full"
           >
-            Register
+           {registerLoading ? <Loader/> : "Register"}
           </button>
         </div>
       </div>

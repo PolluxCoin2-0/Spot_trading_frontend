@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDataObject, setNetwork, setWalletAddress } from "../../redux/slice";
 import polluxWeb from "polluxweb";
 import { useState } from "react";
+import Loader from "../../component/Loader";
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
 const Login = () => {
@@ -99,6 +100,7 @@ const handleLogin = async () => {
           </p>
         </div>
         <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
+          
           <Link
             to="/register"
             className="border border-white text-white py-3 px-4 sm:px-6 font-bold rounded-full hover:bg-white hover:text-gray-900 transition-all w-full md:w-1/2"
@@ -109,8 +111,9 @@ const handleLogin = async () => {
             className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3 px-4 sm:px-6 rounded-full
              shadow-lg hover:shadow-xl transition-all w-full md:w-1/2"
             onClick={handleLogin}
+            disabled={walletLoading} // Optionally disable the button when loading
           >
-            Connect Wallet
+           {walletLoading ? <Loader /> : "Connect Wallet"}
           </button>
         </div>
       </div>
