@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 
 const CountdownTimer = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
+  console.log({ ss: dataArray[0][6] });
 
   // Extract the timestamp indicating when 48 hours is completed
-  const timestampHex = dataArray?.[0]?.[6]?.hex;
+  const timestampHex = dataArray[0][6] || 0;
+  // console.log(Number(dataArray[0][6]));
+
   const originalTimestamp = timestampHex ? Number(timestampHex) : 0; // Convert from hex to number
 
   // Add 48 hours (172,800 seconds) to the target timestamp
