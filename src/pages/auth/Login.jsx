@@ -59,7 +59,7 @@ const handleLogin = async () => {
       isMyAddressRegistered.userAddress ==
       "370000000000000000000000000000000000000000"
     ) {
-      toast.error("User is not already registered");
+      toast.error("User is not  registered");
       return;
     }
     // console.log({isMyAddressRegistered})

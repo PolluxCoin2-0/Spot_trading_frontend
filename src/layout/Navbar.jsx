@@ -11,7 +11,6 @@ const Navbar = () => {
 
   // Function to handle sign out
   const handleSignOut = () => {
-    console.log("ujhuhuhu")
     dispatch(setDataObject()); // Clear wallet data using dispatch
     navigate("/")
     toast.success("Signed out successfully");

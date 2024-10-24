@@ -98,6 +98,7 @@ const Register = () => {
           console.log({ broadcast1 });
         } else {
           toast.error("error in data");
+          return;
         }
       } else {
         toast.error("Download Polink Extension");
@@ -116,14 +117,17 @@ const Register = () => {
           toast.success("Registration Done...!");
 
           // setDataObject
-          dispatch(setDataObject(isMyAddressRegistered));
+          // dispatch(setDataObject(isMyAddressRegistered));
 
-          navigate("/heroSection");
+          navigate("/");
         } else {
           toast.error("error in data");
+     
+       return;
         }
       } else {
         toast.error("Download Polink Extension");
+   
         return;
       }
     } catch (error) {
@@ -154,6 +158,7 @@ const Register = () => {
       toast.error(error.message);
     }
   };
+
   const rawDataRegister = async (params) => {
     try {
       // const hexRefer = PolluxWeb.address.toHex(refer);

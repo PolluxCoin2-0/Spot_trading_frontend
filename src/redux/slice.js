@@ -17,10 +17,8 @@ const walletSlice = createSlice({
       state.address = action.payload;
     },
    setDataObject: (state, action) => {
-    console.log(action);
       // Replace the dataObject array with the new payload
       state.dataObject = [action.payload];
-
     },
     setNetwork: (state, action) => {
       state.Network = action.payload;
