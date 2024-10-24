@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/SpotLogo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { setDataObject } from "../redux/slice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -8,6 +9,7 @@ const Navbar = () => {
 
   // Function to handle sign out
   const handleSignOut = () => {
+    console.log("ujhuhuhu")
     dispatch(setDataObject()); // Clear wallet data using dispatch
     toast.success("Signed out successfully");
   };
