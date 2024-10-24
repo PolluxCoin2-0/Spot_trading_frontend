@@ -13,7 +13,7 @@ const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 
 const HeroSection = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
-  console.log({dataArray} );
+  // console.log({dataArray} );
 
   const PolluxWeb = new polluxWeb({
     fullHost: "https://testnet-fullnode.poxscan.io",

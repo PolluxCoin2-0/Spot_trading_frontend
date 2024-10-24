@@ -2,6 +2,7 @@ import logo from "../assets/SpotLogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataObject } from "../redux/slice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const dispatch = useDispatch();
