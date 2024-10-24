@@ -1,16 +1,18 @@
-import { Link } from "react-router-dom";
 import logo from "../assets/SpotLogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataObject } from "../redux/slice";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
 
   // Function to handle sign out
   const handleSignOut = () => {
     console.log("ujhuhuhu")
     dispatch(setDataObject()); // Clear wallet data using dispatch
+    navigate("/")
     toast.success("Signed out successfully");
   };
 
@@ -18,7 +20,6 @@ const Navbar = () => {
     <div className="bg-[#151515] flex flex-row justify-between items-center px-6 md:px-8 lg:px-16 2xl:px-24 p-4">
       <img src={logo} alt="" className="" />
 
-      <Link to="/">
         <div>
           <button
             type="button"
@@ -29,7 +30,6 @@ const Navbar = () => {
             {dataArray ? "Logout" : "Login"}
           </button>
         </div>
-      </Link>
     </div>
   );
 };
