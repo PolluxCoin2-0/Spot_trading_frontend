@@ -36,6 +36,8 @@ const handleLogin = async () => {
     toast.warning("Login in progress....")
     return;
   }
+
+  
   try {
     setWalletLoading(true);
     const walletAddress = await getPolinkweb(); // Ensure we have the wallet address
@@ -62,11 +64,10 @@ const handleLogin = async () => {
       toast.error("User is not  registered");
       return;
     }
-    // console.log({isMyAddressRegistered})
+    console.log({isMyAddressRegistered})
     // Dispatch data to the Redux store
     dispatch(setDataObject(isMyAddressRegistered));
     
-
     // Navigate to the hero section
     navigate("/herosection");
     

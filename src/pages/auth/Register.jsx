@@ -36,8 +36,14 @@ const Register = () => {
 
     setLoading(true);
     const walletAddress = await getPolinkweb();
+    console.log(walletAddress);
+    // check usdx balance
+    if (walletAddress?.USDX < 30) {
+      toast.error("Insufficient USDX!");
+    }
+
     if (walletAddress) {
-      setMyAddress(walletAddress);
+      setMyAddress(walletAddress?.wallet_address);
       setLoading(false);
     }
   };
@@ -49,8 +55,8 @@ const Register = () => {
   });
 
   const handleRegister = async () => {
-    if(registerLoading){
-      toast.warning("Register in progress....")
+    if (registerLoading) {
+      toast.warning("Register in progress....");
       return;
     }
 
@@ -64,7 +70,7 @@ const Register = () => {
 
       const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
       const isMyAddressRegistered = await address.user(myAddress).call();
-      console.log(isMyAddressRegistered);
+      console.log({ isMyAddressRegistered });
 
       if (
         isMyAddressRegistered.userAddress !=
@@ -94,7 +100,7 @@ const Register = () => {
         if (signedData1[0]) {
           let a = JSON.parse(signedData1[1]);
           const broadcast1 = await PolluxWeb.trx.sendRawTransaction(a);
-          toast.success("Approve Txn Done...!");
+          // toast.success("Approve Txn Done...!");
           console.log({ broadcast1 });
         } else {
           toast.error("error in data");
@@ -114,26 +120,65 @@ const Register = () => {
           let a = JSON.parse(signedData2[1]);
           await PolluxWeb.trx.sendRawTransaction(a);
           console.log({ a });
+          // Check tranactionn is success or revert
+          console.log(a?.txID);
+
+          const MAX_ATTEMPTS = 3;
+          const DELAY = 3000;
+
+          let attempt = 0;
+          let verify = null;
+
+          while (attempt < MAX_ATTEMPTS) {
+            const response  = await axios.post(
+              "https://testnet-fullnode.poxscan.io/wallet/gettransactioninfobyid",
+              {
+                value: a?.txID,
+              }
+            );
+
+            console.log(response?.data);
+
+            if (response?.data?.receipt) {
+              console.log("kuch bhi",  response?.data?.receipt)
+              verify = response?.data?.receipt;
+              break; // Exit loop if found
+            }
+
+            attempt++;
+            if (attempt < MAX_ATTEMPTS) {
+              await new Promise((resolve) => setTimeout(resolve, DELAY)); // Delay for 3 seconds
+            }
+          }
+
+          console.log(verify);
+
+          if (verify?.result !== "SUCCESS") {
+            toast.error("Registration Failed!");
+            setRegisterLoading(false);
+            return;
+          }
+
+          const finalData = await address.user(myAddress).call();
           toast.success("Registration Done...!");
 
           // setDataObject
-          // dispatch(setDataObject(isMyAddressRegistered));
+          dispatch(setDataObject(finalData));
 
-          navigate("/");
+          navigate("/herosection");
         } else {
           toast.error("error in data");
-     
-       return;
+
+          return;
         }
       } else {
         toast.error("Download Polink Extension");
-   
+
         return;
       }
     } catch (error) {
       console.log(error);
-    }
-    finally {
+    } finally {
       setRegisterLoading(false);
     }
   };
@@ -243,7 +288,7 @@ const Register = () => {
             className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3 px-4 sm:px-6 
             rounded-full shadow-lg hover:shadow-xl transition-all w-full"
           >
-           {registerLoading ? <Loader/> : "Register"}
+            {registerLoading ? <Loader /> : "Register"}
           </button>
         </div>
       </div>

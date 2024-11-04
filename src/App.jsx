@@ -22,32 +22,32 @@ function App() {
   }, [location, navigate]);
 
   return (
-    <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <div>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          theme="dark"
-          newestOnTop={true}
-          pauseOnFocusLoss
-          toastClassName="custom-toast"
-        />
-        <Routes>
-          <Route path="/herosection" element={<HeroSection />} />
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </div>
-      </PersistGate>
-      </Provider>
+    <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop={true}
+        pauseOnFocusLoss
+        toastClassName="custom-toast"
+      />
+      <Routes>
+        <Route path="/herosection" element={<HeroSection />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </div>
   );
 }
 
 export default function MainApp() {
   return (
-    <Router>
-      <App />
-    </Router>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
+    </Provider>
   );
 }

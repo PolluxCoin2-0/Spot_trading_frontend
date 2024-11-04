@@ -3,43 +3,44 @@ import { useSelector } from "react-redux";
 
 const CountdownTimer = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
-  
-
-  // Extract the timestamp indicating when 48 hours is completed
-  const timestampHex = dataArray[0][6] || 0;
-  
-  const originalTimestamp = timestampHex ? Number(timestampHex) : 0; // Convert from hex to number
-
-  // Add 48 hours (172,800 seconds) to the target timestamp
-  const targetTimestamp = originalTimestamp + 172800;
-
-  // Get the current time in seconds
-  const currentTime = Math.floor(Date.now() / 1000);
-
-  // Calculate the time left (in seconds) until the target timestamp
-  const initialTime =
-    targetTimestamp > currentTime ? targetTimestamp - currentTime : 0;
-
-  // State to hold the remaining time
-  const [timeLeft, setTimeLeft] = useState(initialTime);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [originalTimestamp, setOriginalTimestamp] = useState(null);
 
   useEffect(() => {
-    // Update timeLeft when the targetTimestamp changes
-    setTimeLeft(initialTime);
+    // Check if dataArray is loaded and contains the timestamp
+    if (dataArray && dataArray.length > 0 && dataArray?.[0]?.[6]) {
+      const timestampHex = dataArray?.[0]?.[6];
+      const parsedTimestamp = timestampHex?.hex
+        ? parseInt(timestampHex.hex, 16)
+        : 0;
+      setOriginalTimestamp(parsedTimestamp);
+    }
+  }, [dataArray]); // Trigger this effect when dataArray updates
 
-    // If there's no time left, don't start the timer
-    if (initialTime === 0) return;
+  useEffect(() => {
+    // Exit if originalTimestamp hasn't been set
+    if (originalTimestamp === null) return;
 
-    // Start the timer
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
+    // Calculate the target timestamp (48 hours later)
+    const targetTimestamp = originalTimestamp + 172800;
 
-    // Clear the interval when component unmounts
-    return () => clearInterval(timer);
-  }, [initialTime, dataArray]); // Depend on initialTime
+    // Initialize time left
+    const currentTime = Math.floor(Date.now() / 1000);
+    const initialTimeLeft =
+      targetTimestamp > currentTime ? targetTimestamp - currentTime : 0;
+    setTimeLeft(initialTimeLeft);
 
-  // Convert seconds to hours, minutes, and seconds
+    // Only start the timer if there's time left
+    if (initialTimeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
+
+      return () => clearInterval(timer); // Cleanup on unmount
+    }
+  }, [originalTimestamp]); // Depend on originalTimestamp
+
+  // Format time into hours, minutes, and seconds
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
