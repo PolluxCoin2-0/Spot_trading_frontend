@@ -2,7 +2,7 @@ import { FaCopy } from "react-icons/fa6";
 import usdxImg from "../../assets/usdx.png";
 import LRImg from "../../assets/lrImg.png";
 import CountdownTimer from "../../component/CountdownTimer";
-import TransactionRecord from "./TransactionRecord";
+import SlotTable from "../../component/SlotTable";
 import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
 import { useSelector } from "react-redux";
@@ -108,7 +108,7 @@ const HeroSection = () => {
       <div>
         <Navbar />
       </div>
-      <div className="bg-black h-auto pt-12">
+      <div className="bg-black min-h-screen pt-12">
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
@@ -249,9 +249,9 @@ const HeroSection = () => {
           <p className="border-[1px] border-[#454545]"></p>
         </div>
 
-        {/* Transaction Record */}
+        {/* Slot Table Record */}
         <div>
-          <TransactionRecord />
+          <SlotTable />
         </div>
       </div>
     </div>

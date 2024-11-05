@@ -1,7 +1,7 @@
 import logo from "../assets/SpotLogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataObject } from "../redux/slice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
@@ -18,19 +18,34 @@ const Navbar = () => {
 
   return (
     <div className="bg-[#151515] flex flex-row justify-between items-center px-6 md:px-8 lg:px-16 2xl:px-24 p-4">
-      <img src={logo} alt="" className="" />
-
-        <div>
-          <button
-            type="button"
-            className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3  px-8 md:px-6 rounded-full
-             shadow-lg hover:shadow-xl transition-all w-full "
-            onClick={dataArray ? handleSignOut : null}
-          >
-            {dataArray ? "Logout" : "Login"}
-          </button>
-        </div>
+    <div>
+    <img src={logo} alt="" className="" />
     </div>
+   
+   <div className="flex flex-row space-x-10 items-center ">
+    <Link  to="/record">
+  
+    <div>
+      <button
+      type="button"
+      className="text-white font-bold text-xl underline">
+        Transactions
+      </button>
+    </div>
+    </Link>
+
+      <div>
+        <button
+          type="button"
+          className="whitespace-nowrap bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold py-3  px-8 md:px-6 rounded-full
+           shadow-lg hover:shadow-xl transition-all w-full "
+          onClick={dataArray ? handleSignOut : null}
+        >
+          {dataArray ? "Logout" : "Login"}
+        </button>
+      </div>
+      </div>
+  </div>
   );
 };
 

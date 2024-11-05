@@ -72,7 +72,7 @@ const TransactionRecord = () => {
   };
 
   return (
-    <div>
+    <div className="bg-black min-h-screen pt-12">
       <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10">
         Transactions Record
       </p>

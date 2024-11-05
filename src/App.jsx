@@ -5,6 +5,8 @@ import HeroSection from "../src/pages/Home/HeroSection";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
+import TransactionRecord from "./pages/Home/TransactionRecord";
+import SlotTable from "./component/SlotTable";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
@@ -35,6 +37,8 @@ function App() {
         <Route path="/herosection" element={<HeroSection />} />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/record" element={<TransactionRecord />} />
+        <Route path="/slot" element={<SlotTable />} />
       </Routes>
     </div>
   );
