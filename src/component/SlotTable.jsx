@@ -1,22 +1,12 @@
 import { useState } from "react";
 
-const transactionsList = [
-  { SNo: 1, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 2, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 3, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 4, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 5, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 6, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 7, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-  { SNo: 8, Earning: 100, DirectJoin: 3, Hours: 2, Task: "Completed" },
-];
-
-const SlotTable = () => {
+const SlotTable = ({ title, transactions }) => {
   const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <div className="bg-black min-h-screen pt-12">
+    <div className="bg-black h-auto pt-0">
       <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10">
-        Transactions Record
+        {title} Slot
       </p>
 
       {isLoading ? (
@@ -39,44 +29,40 @@ const SlotTable = () => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
-      ) : transactionsList.length > 0 ? (
-        <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20">
-          <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-2 w-full">
-            <span className="text-white text-sm md:text-lg font-bold w-[10%]">
+      ) : transactions.length > 0 ? (
+        <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20 ">
+          <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-5 w-full">
+            <span className="text-white text-sm md:text-lg font-bold w-[15%] text-center">
               Sr.No
             </span>
-            <span className="text-white text-sm md:text-lg font-bold w-[30%]">
+            <span className="text-white text-sm md:text-lg font-bold w-[25%] text-center">
               Earning(USDX)
             </span>
-            <span className="text-white text-sm md:text-lg font-bold w-[20%]">
+            <span className="text-white text-sm md:text-lg font-bold w-[20%] text-center">
               Direct Joinings
             </span>
-            <span className="text-white text-sm md:text-lg font-bold w-[20%] text-end">
-              Hours
-            </span>
-            <span className="text-white text-sm md:text-lg font-bold w-[20%] text-end">
+            
+            <span className="text-white text-sm md:text-lg font-bold w-[20%] text-center">
               Task
             </span>
           </div>
 
-          {transactionsList.map((data, index) => (
+          {transactions.map((data, index) => (
             <div
               key={index}
               className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
             >
-              <span className="text-[#8A8A8A] text-md font-semibold w-[10%]">
+              <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
                 {data.SNo}
               </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
+              <span className="text-[#8A8A8A] text-md font-semibold w-[25%] text-center">
                 {data.Earning}
               </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[20%]">
+              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
                 {data.DirectJoin}
               </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-end">
-                {data.Hours}
-              </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-end">
+              
+              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
                 {data.Task}
               </span>
             </div>

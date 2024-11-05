@@ -9,6 +9,54 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+
+const transactionsGold = [
+  { SNo: 1, Earning: "USDX20", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 2, Earning: "USDX80", DirectJoin: "2/2", Task: "Completed" },
+  { SNo: 3, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 4, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
+  { SNo: 5, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
+  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+   
+  
+  // Other gold transactions
+];
+
+const transactionsSilver = [
+  { SNo: 1, Earning: "USDX20", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  // Other silver transactions
+];
+
+const transactionsDiamond = [
+  { SNo: 1, Earning: "USDX50", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
+  // Other diamond transactions
+];
+
+
+const transactionsBronze = [
+  { SNo: 1, Earning: "USDX50", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2", Task: "Completed" },
+  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
+  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
+  // Other diamond transactions
+];
+
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 
@@ -251,8 +299,11 @@ const HeroSection = () => {
 
         {/* Slot Table Record */}
         <div>
-          <SlotTable />
-        </div>
+      <SlotTable title="Gold" transactions={transactionsGold} />
+      <SlotTable title="Silver" transactions={transactionsSilver} />
+      <SlotTable title="Diamond" transactions={transactionsDiamond} />
+      <SlotTable title="Bronze" transactions={transactionsBronze} /> {/* Empty list for no data example */}
+    </div>
       </div>
     </div>
   );
