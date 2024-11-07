@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDataObject } from "../../redux/slice";
 import Loader from "../../component/Loader";
+import { registerApi } from "../../utils/axios/apisFunction";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const USDX_ADDRESS = import.meta.env.VITE_Usdx;
@@ -159,11 +160,15 @@ const Register = () => {
             return;
           }
 
+          const registerDetails = await registerApi(a?.txID, myAddress, referralAddress);
+          console.log({registerDetails})
+
           const finalData = await address.user(myAddress).call();
+
           toast.success("Registration Done...!");
 
           // setDataObject
-          dispatch(setDataObject(finalData));
+          dispatch(setDataObject(registerDetails?.newUser));
 
           navigate("/herosection");
         } else {

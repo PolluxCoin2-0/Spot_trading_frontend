@@ -5,81 +5,84 @@ import { setDataObject, setNetwork, setWalletAddress } from "../../redux/slice";
 import polluxWeb from "polluxweb";
 import { useState } from "react";
 import Loader from "../../component/Loader";
+import { loginApi } from "../../utils/axios/apisFunction";
+
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
 const Login = () => {
-   const [myAddress, setMyAddress] = useState("");
-   const [walletLoading, setWalletLoading] = useState(false);
+  const [myAddress, setMyAddress] = useState("");
+  const [walletLoading, setWalletLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
 
   // Connect wallet function
-async function getPolinkweb() {
-  return new Promise((resolve, reject) => {
-    const obj = setInterval(async () => {
-      if (window.pox) {
-        clearInterval(obj);
-        try {
-          const detailsData = JSON.stringify(await window.pox.getDetails());
-          const parsedDetailsObject = JSON.parse(detailsData);
-          resolve(parsedDetailsObject[1].data?.wallet_address);
-        } catch (error) {
-          reject("Failed to get wallet address");
+  async function getPolinkweb() {
+    return new Promise((resolve, reject) => {
+      const obj = setInterval(async () => {
+        if (window.pox) {
+          clearInterval(obj);
+          try {
+            const detailsData = JSON.stringify(await window.pox.getDetails());
+            const parsedDetailsObject = JSON.parse(detailsData);
+            resolve(parsedDetailsObject[1].data?.wallet_address);
+          } catch (error) {
+            reject("Failed to get wallet address");
+          }
         }
-      }
-    }, 100);
-  });
-}
-
-const handleLogin = async () => {
-  if(walletLoading){
-    toast.warning("Login in progress....")
-    return;
-  }
-
-  
-  try {
-    setWalletLoading(true);
-    const walletAddress = await getPolinkweb(); // Ensure we have the wallet address
-    if (!walletAddress) {
-      toast.error("Failed to retrieve wallet address");
-      return;
-    }
-
-    // console.log("Got wallet address", walletAddress);
-
-    const PolluxWeb = new polluxWeb({
-      fullHost: "https://testnet-fullnode.poxscan.io",
-      privateKey:
-        "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
+      }, 100);
     });
+  }
 
-    const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
-    const isMyAddressRegistered = await address.user(walletAddress).call();
-
-    if (
-      isMyAddressRegistered.userAddress ==
-      "370000000000000000000000000000000000000000"
-    ) {
-      toast.error("User is not  registered");
+  const handleLogin = async () => {
+    if (walletLoading) {
+      toast.warning("Login in progress....");
       return;
     }
-    console.log({isMyAddressRegistered})
-    // Dispatch data to the Redux store
-    dispatch(setDataObject(isMyAddressRegistered));
-    
-    // Navigate to the hero section
-    navigate("/herosection");
-    
-  } catch (error) {
-    console.error("An error occurred:", error);
-    toast.error("An error occurred during login");
-  }
-  finally {
-    setWalletLoading(false);
-  }
-};
 
+    try {
+      setWalletLoading(true);
+      const walletAddress = await getPolinkweb(); // Ensure we have the wallet address
+      if (!walletAddress) {
+        toast.error("Failed to retrieve wallet address");
+        return;
+      }
+
+      // console.log("Got wallet address", walletAddress);
+
+      const PolluxWeb = new polluxWeb({
+        fullHost: "https://testnet-fullnode.poxscan.io",
+        privateKey:
+          "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
+      });
+
+      const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
+      const isMyAddressRegistered = await address.user(walletAddress).call();
+
+      if (
+        isMyAddressRegistered.userAddress ==
+        "370000000000000000000000000000000000000000"
+      ) {
+        toast.error("User is not  registered");
+        return;
+      }
+      console.log({ isMyAddressRegistered });
+
+      const loginDetails = await loginApi(walletAddress);
+      console.log({ loginDetails });
+
+      // Dispatch data to the Redux store
+      dispatch(setDataObject(loginDetails?.data));
+      // localStorage.setItem("data", JSON.stringify(isMyAddressRegistered));
+
+      // Navigate to the hero section
+      navigate("/herosection");
+    } catch (error) {
+      console.error("An error occurred:", error);
+      toast.error("An error occurred during login");
+    } finally {
+      setWalletLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4">
@@ -101,7 +104,6 @@ const handleLogin = async () => {
           </p>
         </div>
         <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
-          
           <Link
             to="/register"
             className="border border-white text-white py-3 px-4 sm:px-6 font-bold rounded-full hover:bg-white hover:text-gray-900 transition-all w-full md:w-1/2"
@@ -114,7 +116,7 @@ const handleLogin = async () => {
             onClick={handleLogin}
             disabled={walletLoading} // Optionally disable the button when loading
           >
-           {walletLoading ? <Loader /> : "Connect Wallet"}
+            {walletLoading ? <Loader /> : "Connect Wallet"}
           </button>
         </div>
       </div>

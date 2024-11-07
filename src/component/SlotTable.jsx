@@ -2,6 +2,20 @@ import { useState } from "react";
 
 const SlotTable = ({ title, transactions }) => {
   const [isLoading, setIsLoading] = useState(false);
+  // const [silverSlotData, setSilverSlotData] = useState(false);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const silverSlotData = await getSilverSlotData();
+  //       setData(silverSlotData?.message);
+       
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <div className="bg-black h-auto pt-0">

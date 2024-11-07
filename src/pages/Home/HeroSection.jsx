@@ -299,10 +299,10 @@ const HeroSection = () => {
 
         {/* Slot Table Record */}
         <div>
-      <SlotTable title="Gold" transactions={transactionsGold} />
-      <SlotTable title="Silver" transactions={transactionsSilver} />
-      <SlotTable title="Diamond" transactions={transactionsDiamond} />
-      <SlotTable title="Bronze" transactions={transactionsBronze} /> {/* Empty list for no data example */}
+      <SlotTable title="Silver" transactions={transactionsGold} />
+      <SlotTable title="Gold" transactions={transactionsSilver} />
+      <SlotTable title="Bronze" transactions={transactionsDiamond} />
+      <SlotTable title="Diamond" transactions={transactionsBronze} /> {/* Empty list for no data example */}
     </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { shortenString } from "../../utils/shortenString";
 import Pagination from "../../component/Pagination";
+import { transactionApi } from "../../utils/axios/apisFunction";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
@@ -19,6 +20,17 @@ const TransactionRecord = () => {
     privateKey:
       "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
   });
+
+  
+  // useEffect(() => {
+  //   const fetchD
+  //   try {
+  //       const transactionRecord = await transactionApi(userAddress, page, pageLimit);
+
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,8 +163,28 @@ const TransactionRecord = () => {
           No Data Found
         </p>
       )}
+
+
+      
     </div>
   );
 };
 
 export default TransactionRecord;
+// const dataArray = useSelector((state) => state?.wallet?.dataObject);
+// let dataArray = localStorage.getItem("data");
+// dataArray = JSON.parse(dataArray);
+// const [timeLeft, setTimeLeft] = useState(0);
+// const [originalTimestamp, setOriginalTimestamp] = useState(null);
+
+// useEffect(() => {
+  // Check if dataArray is loaded and contains the timestamp
+//   if (dataArray && dataArray.length > 0 && dataArray?.[0]?.[6]) {
+//     const timestampHex = dataArray?.[0]?.[6];
+//     console.log({ ss: dataArray?.[0]?.[6] });
+
+//     const parsedTimestamp = timestampHex ? Number(timestampHex, 16) : 0;
+//     setOriginalTimestamp(parsedTimestamp);
+//   }
+// }, [dataArray]); // Trigger this effect when dataArray updates
+
