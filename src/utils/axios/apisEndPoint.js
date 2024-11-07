@@ -6,6 +6,7 @@ const API_ENDPOINTS = {
 
     user: {
         getTransactionDetails: "/getTxns",
+        getWithdraw: "/reqWithdraw",
        
       },
    

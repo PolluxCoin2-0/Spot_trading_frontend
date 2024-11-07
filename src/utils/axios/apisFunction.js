@@ -70,4 +70,10 @@ export const transactionApi = async (userAddress, page, pageLimit)  => {
      pageLimit
     });
 }
+
+export const withdrawApi = async (userAddress) => {
+  return postRequest(API_ENDPOINTS.user.getWithdraw, {
+    userAddress,
+  });
+}
   
