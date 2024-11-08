@@ -41,6 +41,8 @@ const Register = () => {
     // check usdx balance
     if (walletAddress?.USDX < 30) {
       toast.error("Insufficient USDX!");
+      return;
+      setLoading(false);
     }
 
     if (walletAddress) {
