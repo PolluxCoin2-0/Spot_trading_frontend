@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
 
+
+
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 
@@ -68,7 +70,9 @@ const HeroSection = () => {
       <div>
         <Navbar />
       </div>
-      <div className="bg-black min-h-screen pt-12">
+      <div className="bg-black min-h-screen pt-12"
+       
+       >
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
@@ -207,10 +211,10 @@ const HeroSection = () => {
 
         {/* Slot Table Record */}
         <div>
-          <SlotTable title="Silver" color="#C0C0C0" transactions={silverData} />
-          <SlotTable title="Gold" transactions={goldData} />
-          <SlotTable title="Bronze" transactions={bronzeData} />
-          <SlotTable title="Diamond" transactions={diamondData} />{" "}
+          <SlotTable title="Silver" color1="#71FEFE"  color2="#3DCEFE" transactions={silverData} />
+          <SlotTable title="Gold" color1="#71FEFE"  color2="#3DCEFE" transactions={goldData} />
+          <SlotTable title="Bronze" color1="#71FEFE"  color2="#3DCEFE" transactions={bronzeData} />
+          <SlotTable title="Diamond" color1="#71FEFE"  color2="#3DCEFE" transactions={diamondData} />{" "}
           {/* Empty list for no data example */}
         </div>
       </div>

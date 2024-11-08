@@ -1,10 +1,19 @@
 import { useState } from "react";
+import bgImg from "../assets/Asset.png"
 
-const SlotTable = ({ title, transactions, color }) => {
+const SlotTable = ({ title, transactions, color1, color2 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
+ // Define colors with 10% opacity
+const color1WithOpacity = "rgba(113, 254, 254, 0.06)"; // 10% opacity for color1 (#71FEFE)
+const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2 (#3DCEFE)
+
+
   return (
-    <div className="bg-black h-auto pt-0">
+
+    
+    <div className="bg-black h-auto pt-0"
+   >
       <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10">
         {title} Slot
       </p>
@@ -29,9 +38,10 @@ const SlotTable = ({ title, transactions, color }) => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
+        // border-b-[1px] border-[#454545]
       ) : transactions?.length > 0 ? (
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20 ">
-          <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-5 w-full">
+          <div className="flex flex-row justify-between  pb-5 w-full">
             <span className="text-white text-sm md:text-lg font-bold w-[15%] text-center">
               Sr.No
             </span>
@@ -50,7 +60,12 @@ const SlotTable = ({ title, transactions, color }) => {
           {transactions?.map((data, index) => (
             <div
               key={index}
-              className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
+              className="flex flex-row justify-between  pt-6 pb-4 w-full"
+              style={{
+                backgroundColor: index % 2 === 0 ? color1WithOpacity : color2WithOpacity,
+                 // Alternate between color1 and color2
+              }}
+              
             >
               <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
                 {data.srNo}
@@ -74,6 +89,8 @@ const SlotTable = ({ title, transactions, color }) => {
         </p>
       )}
     </div>
+
+    
   );
 };
 
