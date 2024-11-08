@@ -14,7 +14,7 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
     
     <div className="bg-black h-auto pt-0"
    >
-      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10 ml-20 mb-20 ">
+      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10 ">
         {title} Slot
       </p>
 
