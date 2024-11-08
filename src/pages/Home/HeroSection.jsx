@@ -40,7 +40,10 @@ const HeroSection = () => {
     if(dataArray?.[0]?.userAddress){
       fetchData();
     }
-  }, []);
+  }, [dataArray[0]]);
+
+console.log("render");
+
 
   const handleContractCopy = () => {
     const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
@@ -63,12 +66,13 @@ const HeroSection = () => {
       toast.error("Not eligible for withdrawal!");
       return;
     }
-
+    
     try {
       setIsLoading(true);
       const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
       console.log(withdrawApiData);
       const loginDetails = await loginApi(dataArray?.[0]?.userAddress);
+      console.log({loginDetails});
       dispatch(setDataObject(loginDetails?.data));
       toast.success("Withdrawal successfully");
     } catch (error) {
@@ -149,7 +153,7 @@ const HeroSection = () => {
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
                     {dataArray?.[0]
-                      ? Number(dataArray?.[0]?.availableBalance).toFixed(6)
+                      ? dataArray?.[0]?.availableBalance
                       : 0}
                   </p>
                 </div>
@@ -162,7 +166,7 @@ const HeroSection = () => {
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
                     {dataArray?.[0]
-                      ? Number(dataArray?.[0]?.claimedBalance).toFixed(6)
+                      ? dataArray?.[0]?.claimedBalance
                       : 0}
                   </p>
                 </div>
