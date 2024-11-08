@@ -58,19 +58,19 @@ const CountdownTimer = () => {
       <div className="flex justify-center items-center space-x-4 p-4 text-white rounded-lg mt-16 mb-10">
         <div className="flex flex-col items-center">
           <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
-            {dataArray[0].coolDown ? hours : "00"}
+            {dataArray[0].coolDown ? "00" : hours}
           </span>
         </div>
         <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
         <div className="flex flex-col items-center">
           <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
-            {dataArray[0].coolDown ? minutes : '00'}
+            {dataArray[0].coolDown ? '00' : minutes}
           </span>
         </div>
         <span className="text-5xl md:text-6xl xl:text-7xl font-bold">:</span>
         <div className="flex flex-col items-center">
           <span className="text-5xl md:text-6xl xl:text-7xl font-bold">
-            {dataArray[0].coolDown ? seconds : '00'}
+            {dataArray[0].coolDown ? '00' : seconds}
           </span>
         </div>
       </div>
