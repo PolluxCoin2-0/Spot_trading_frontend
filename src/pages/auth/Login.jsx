@@ -16,8 +16,6 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
 
-  
-
   const handleLogin = async () => {
     if (walletLoading) {
       toast.warning("Login in progress....");
@@ -33,16 +31,17 @@ const Login = () => {
       }
 
       // console.log("Got wallet address", walletAddress);
-
-      const loginDetails = await loginApi(walletAddress?.wallet_address);
-      console.log({ loginDetails });
-
-      // Dispatch data to the Redux store
-      dispatch(setDataObject(loginDetails?.data));
-      // localStorage.setItem("data", JSON.stringify(isMyAddressRegistered));
-
-      // Navigate to the hero section
-      navigate("/herosection");
+      try {
+        const loginDetails = await loginApi(walletAddress?.wallet_address);
+        dispatch(setDataObject(loginDetails?.data));
+        navigate("/dashboard");
+      } catch (error) {
+        if (error?.response?.data?.message === "user does not exist") {
+          toast.error("User does not Exist");
+          setWalletLoading(false);
+          return;
+        }
+      }
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("An error occurred during login");

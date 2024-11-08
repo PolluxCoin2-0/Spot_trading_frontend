@@ -34,7 +34,7 @@ function App() {
         toastClassName="custom-toast"
       />
       <Routes>
-        <Route path="/herosection" element={<HeroSection />} />
+        <Route path="/dashboard" element={<HeroSection />} />
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/record" element={<TransactionRecord />} />

@@ -50,7 +50,7 @@ const SlotTable = ({ title, transactions, color }) => {
           {transactions?.map((data, index) => (
             <div
               key={index}
-              className={`flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full ${color}`}
+              className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
             >
               <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
                 {data.srNo}
@@ -69,7 +69,7 @@ const SlotTable = ({ title, transactions, color }) => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-xl text-white font-bold">
+        <p className="text-center text-xl text-white font-bold ">
           No Data Found
         </p>
       )}

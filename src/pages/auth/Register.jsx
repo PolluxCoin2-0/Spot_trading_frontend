@@ -155,7 +155,7 @@ const Register = () => {
           // setDataObject
           dispatch(setDataObject(registerDetails?.newUser));
 
-          navigate("/herosection");
+          navigate("/dashboard");
         } else {
           toast.error("error in data");
 
