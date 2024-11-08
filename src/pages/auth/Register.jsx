@@ -35,18 +35,23 @@ const Register = () => {
       return;
     }
 
-    setLoading(true);
-    const walletAddress = await getPolinkweb();
-    console.log(walletAddress);
+    try {
+      setLoading(true);
+      const walletAddress = await getPolinkweb();
+      console.log(walletAddress);
     // check usdx balance
     if (walletAddress?.USDX < 30) {
       toast.error("Insufficient USDX!");
-      return;
       setLoading(false);
+      return;
     }
 
     if (walletAddress) {
       setMyAddress(walletAddress?.wallet_address);
+    }
+    } catch (error) {
+      console.log(error);
+    } finally{
       setLoading(false);
     }
   };
