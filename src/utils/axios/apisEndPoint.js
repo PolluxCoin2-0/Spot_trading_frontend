@@ -8,6 +8,7 @@ const API_ENDPOINTS = {
         getTransactionDetails: "/getTxns",
         getWithdraw: "/reqWithdraw",
         getSlot: "/getSlot",
+        getReferStatus: "/checkRefer",
        
       },
    

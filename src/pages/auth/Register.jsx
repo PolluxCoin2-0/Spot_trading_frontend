@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDataObject } from "../../redux/slice";
 import Loader from "../../component/Loader";
-import { registerApi } from "../../utils/axios/apisFunction";
+import { checkReferStatusApi, registerApi } from "../../utils/axios/apisFunction";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const USDX_ADDRESS = import.meta.env.VITE_Usdx;
@@ -56,11 +56,28 @@ const Register = () => {
   });
 
   const handleRegister = async () => {
+
+    if(!myAddress || !referralAddress){
+      toast.error("Enter both input fields");
+      return;
+    }
+
     if (registerLoading) {
       toast.warning("Register in progress....");
       return;
     }
-
+     
+    try {
+      const referApiData = await checkReferStatusApi(referralAddress);
+      console.log(referApiData);
+    } catch (error) {
+      console.log(error);
+      if(error?.response?.data?.message === 'Invalid referer address'){
+        toast.error("Invalid referer address")
+        return;
+      }
+    }
+ 
     try {
       setRegisterLoading(true);
       // Both feilds are not empty
@@ -138,24 +155,22 @@ const Register = () => {
             setRegisterLoading(false);
             return;
           }
-
-          const registerDetails = await registerApi(
-            a?.txID,
-            myAddress,
-            referralAddress
-          );
-          console.log( registerDetails?.response?.data?.message);
-
-          // if(registerDetails?.response?.data?.message ===)
-
-          const finalData = await address.user(myAddress).call();
-
-          toast.success("Registration Done...!");
-
-          // setDataObject
+          
+          try {
+            const registerDetails = await registerApi(a?.txID, myAddress, referralAddress);
+            console.log( registerDetails?.response?.data?.message);
+             // setDataObject
           dispatch(setDataObject(registerDetails?.newUser));
-
+          toast.success("Registration Done...!");
           navigate("/dashboard");
+          } catch (error) {
+            console.log(error);
+            if(error?.response?.data?.message === 'User already Registered'){
+              toast.error("User already Registered")
+              return;
+            }
+          }
+
         } else {
           toast.error("error in data");
 
