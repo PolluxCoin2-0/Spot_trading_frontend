@@ -29,7 +29,7 @@ const SlotTable = ({ title, transactions, color }) => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
-      ) : transactions.length > 0 ? (
+      ) : transactions?.length > 0 ? (
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20 ">
           <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-5 w-full">
             <span className="text-white text-sm md:text-lg font-bold w-[15%] text-center">
@@ -47,7 +47,7 @@ const SlotTable = ({ title, transactions, color }) => {
             </span>
           </div>
 
-          {transactions.map((data, index) => (
+          {transactions?.map((data, index) => (
             <div
               key={index}
               className={`flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full ${color}`}
