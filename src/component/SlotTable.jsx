@@ -1,5 +1,5 @@
 import { useState } from "react";
-import bgImg from "../assets/Asset.png"
+
 
 const SlotTable = ({ title, transactions, color1, color2 }) => {
   const [isLoading, setIsLoading] = useState(false);
