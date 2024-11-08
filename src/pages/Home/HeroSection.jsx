@@ -7,8 +7,9 @@ import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
+import { loginApi, slotApi, withdrawApi } from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
+import Loader from "../../component/Loader";
 
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
@@ -22,6 +23,7 @@ const HeroSection = () => {
   const [goldData, setGoldData] = useState([]);
   const [bronzeData, setBronzeData] = useState([]);
   const [diamondData, setDiamondData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,15 +55,32 @@ const HeroSection = () => {
   };
 
   const handleWithdrawl = async () => {
+    if(isLoading){
+      return;
+    }
+
     if (!dataArray?.[0]?.eligibleForWithdraw) {
       toast.error("Not eligible for withdrawal!");
       return;
     }
 
-    const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
-    console.log(withdrawApiData);
+    try {
+      setIsLoading(true);
+      const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
+      console.log(withdrawApiData);
+      const loginDetails = await loginApi(dataArray?.[0]?.userAddress);
+      dispatch(setDataObject(loginDetails?.data));
+      toast.success("Withdrawal successfully");
+    } catch (error) {
+      console.log("withdrawal error", error);
+      if(error?.response?.data?.message  === "No balance"){
+        toast.error("No balance!");
+      }
+    } finally{
+      setIsLoading(false);
+    }
 
-    toast.success("Withdrawal successfully");
+   
   };
 
   return (
@@ -173,7 +192,7 @@ const HeroSection = () => {
 
           <div className="w-full md:w-[50%] bg-[#151515]  rounded-3xl pb-8 shadow-inner shadow-[#464545] mt-6 md:mt-0">
             <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-2 pb-3 shadow-inner shadow-[#464545]">
-              WITHDRAW
+           WITHDRAW
             </p>
             <div className="p-8 md:p-4 lg:p-8 flex flex-col md:flex-row justify-between space-x-0 md:space-x-3 lg:space-x-6 items-center w-full mt-4">
               <div className="w-full md:w-[40%] xl:w-[20%] flex flex-row items-center justify-center space-x-2 bg-[#1a1919] pt-1 pb-1 rounded-lg">
@@ -191,7 +210,7 @@ const HeroSection = () => {
                              rounded-lg shadow-lg hover:shadow-xl transition-all w-full"
                   onClick={handleWithdrawl}
                 >
-                  Withdraw
+                    {isLoading ? <Loader/> : "Withdraw"}
                 </button>
               </div>
             </div>
