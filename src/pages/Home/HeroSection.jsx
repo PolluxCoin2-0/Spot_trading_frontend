@@ -143,7 +143,7 @@ const HeroSection = () => {
 
             <div className="w-full  flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
               <div className="w-1/2">
-                <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 ">
+                <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 whitespace-nowrap">
                   Available Balance
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
@@ -156,7 +156,7 @@ const HeroSection = () => {
               </div>
 
               <div className="w-1/2">
-                <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 ">
+                <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 whitespace-nowrap">
                   Claimed Balance
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl shadow-inner shadow-[#464545]">
