@@ -28,7 +28,7 @@ const Navbar = () => {
     <div>
       <button
       type="button"
-      className="text-white font-bold text-xl underline">
+      className="text-white font-semibold text-2xl ">
         Transactions
       </button>
     </div>

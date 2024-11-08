@@ -63,17 +63,17 @@ const getRequest = async (endpoint, token) => {
 
 
 //   Transaction Record 
-export const transactionApi = async (userAddress, page, pageLimit)  => {
-    return getRequest(API_ENDPOINTS.user.getTransactionDetails, {
-     userAddress,
-     page,
-     pageLimit
-    });
+export const transactionApi = async (userAddress, page)  => {
+    return getRequest(API_ENDPOINTS.user.getTransactionDetails + `?userAddress=${userAddress}&page=${page}&pageLimit=20`);
 }
 
 export const withdrawApi = async (userAddress) => {
   return postRequest(API_ENDPOINTS.user.getWithdraw, {
     userAddress,
   });
+}
+
+export const slotApi = async (userAddress) => {
+        return getRequest(API_ENDPOINTS.user.getSlot + `?userAddress=${userAddress}`);
 }
   

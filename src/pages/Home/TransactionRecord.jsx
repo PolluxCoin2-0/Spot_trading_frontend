@@ -11,73 +11,24 @@ const TransactionRecord = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [transactionsList, setTransactionsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  // Fetch user address (update this line as per your method)
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
-
-  const itemsPerPage = 10;
-
-  const PolluxWeb = new polluxWeb({
-    fullHost: "https://testnet-fullnode.poxscan.io",
-    privateKey:
-      "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
-  });
-
-  
-  // useEffect(() => {
-  //   const fetchD
-  //   try {
-  //       const transactionRecord = await transactionApi(userAddress, page, pageLimit);
-
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // })
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
-        const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
-        const transactionLength = await address
-          .getUserTransactionsLength(
-            PolluxWeb.address.fromHex(dataArray?.[0]?.[1])
-          )
-          .call();
-
-        const length = Number(transactionLength?._hex);
-
-        const transactionList = [];
-        const addr = PolluxWeb.address.fromHex(dataArray?.[0]?.[1]);
-
-        for (let i = 0; i < length; i++) {
-          try {
-            const transaction = await address.Transactions(addr, i).call();
-            const formattedTransaction = {
-              From: PolluxWeb.address.fromHex(transaction?.from),
-              To: PolluxWeb.address.fromHex(transaction?.to),
-              Amount: Number(transaction?.amount?._hex) / Math.pow(10, 18),
-              Type: transaction?._type,
-            };
-            transactionList.push(formattedTransaction);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-
-        setTransactionsList(transactionList);
+        const transactionRecord = await transactionApi(
+          dataArray?.[0]?.userAddress,
+          currentPage
+        );
+        console.log(transactionRecord?.data);
+        setTransactionsList(transactionRecord?.data);
       } catch (error) {
-        console.error("Error fetching transactions:", error);
-      } finally {
-        setIsLoading(false);
+        console.log("error", error);
       }
     };
-
     fetchData();
-  }, []);
-
-  const paginatedData = transactionsList.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  }, [dataArray?.[0]?.userAddress]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -109,7 +60,7 @@ const TransactionRecord = () => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
-      ) : transactionsList.length > 0 ? (
+      ) : transactionsList?.transactions?.length > 0 ? (
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20">
           <div className="flex flex-row justify-between border-b-[1px] border-[#454545] pb-2 w-full">
             <span className="text-white text-sm md:text-lg font-bold w-[30%]">
@@ -126,35 +77,35 @@ const TransactionRecord = () => {
             </span>
           </div>
 
-          {transactionsList &&
-            paginatedData.map((data, index) => (
+          {transactionsList?.transactions &&
+            transactionsList?.transactions.map((data, index) => (
               <div
                 key={index}
                 className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
               >
                 <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
                   <span className="block md:hidden">
-                    {shortenString(data.From, 3)}
+                    {shortenString(data?.from, 3)}
                   </span>
-                  <span className="hidden md:block">{data.From}</span>
+                  <span className="hidden md:block">{data?.from}</span>
                 </span>
                 <span className="text-[#8A8A8A] text-md font-semibold w-[30%]">
                   <span className="block md:hidden">
-                    {shortenString(data.To, 3)}
+                    {shortenString(data?.to, 3)}
                   </span>
-                  <span className="hidden md:block">{data.To}</span>
+                  <span className="hidden md:block">{data?.to}</span>
                 </span>
                 <span className="text-[#8A8A8A] text-md font-semibold w-[20%]">
-                  {data.Amount}
+                  {data?.amount}
                 </span>
                 <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-end">
-                  {data.Type}
+                  {data?._type}
                 </span>
               </div>
             ))}
 
           <Pagination
-            totalRecords={transactionsList.length}
+            totalRecords={transactionsList?.totalRecords}
             setPageNo={handlePageChange}
           />
         </div>
@@ -163,28 +114,8 @@ const TransactionRecord = () => {
           No Data Found
         </p>
       )}
-
-
-      
     </div>
   );
 };
 
 export default TransactionRecord;
-// const dataArray = useSelector((state) => state?.wallet?.dataObject);
-// let dataArray = localStorage.getItem("data");
-// dataArray = JSON.parse(dataArray);
-// const [timeLeft, setTimeLeft] = useState(0);
-// const [originalTimestamp, setOriginalTimestamp] = useState(null);
-
-// useEffect(() => {
-  // Check if dataArray is loaded and contains the timestamp
-//   if (dataArray && dataArray.length > 0 && dataArray?.[0]?.[6]) {
-//     const timestampHex = dataArray?.[0]?.[6];
-//     console.log({ ss: dataArray?.[0]?.[6] });
-
-//     const parsedTimestamp = timestampHex ? Number(timestampHex, 16) : 0;
-//     setOriginalTimestamp(parsedTimestamp);
-//   }
-// }, [dataArray]); // Trigger this effect when dataArray updates
-

@@ -6,6 +6,7 @@ import polluxWeb from "polluxweb";
 import { useState } from "react";
 import Loader from "../../component/Loader";
 import { loginApi } from "../../utils/axios/apisFunction";
+import { getPolinkweb } from "../../utils/connectWallet";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 
@@ -15,23 +16,7 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
 
-  // Connect wallet function
-  async function getPolinkweb() {
-    return new Promise((resolve, reject) => {
-      const obj = setInterval(async () => {
-        if (window.pox) {
-          clearInterval(obj);
-          try {
-            const detailsData = JSON.stringify(await window.pox.getDetails());
-            const parsedDetailsObject = JSON.parse(detailsData);
-            resolve(parsedDetailsObject[1].data?.wallet_address);
-          } catch (error) {
-            reject("Failed to get wallet address");
-          }
-        }
-      }, 100);
-    });
-  }
+  
 
   const handleLogin = async () => {
     if (walletLoading) {
@@ -49,25 +34,7 @@ const Login = () => {
 
       // console.log("Got wallet address", walletAddress);
 
-      const PolluxWeb = new polluxWeb({
-        fullHost: "https://testnet-fullnode.poxscan.io",
-        privateKey:
-          "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
-      });
-
-      const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
-      const isMyAddressRegistered = await address.user(walletAddress).call();
-
-      if (
-        isMyAddressRegistered.userAddress ==
-        "370000000000000000000000000000000000000000"
-      ) {
-        toast.error("User is not  registered");
-        return;
-      }
-      console.log({ isMyAddressRegistered });
-
-      const loginDetails = await loginApi(walletAddress);
+      const loginDetails = await loginApi(walletAddress?.wallet_address);
       console.log({ loginDetails });
 
       // Dispatch data to the Redux store

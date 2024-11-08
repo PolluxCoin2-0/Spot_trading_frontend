@@ -7,55 +7,8 @@ import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import axios from "axios";
-
-
-const transactionsGold = [
-  { SNo: 1, Earning: "USDX20", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 2, Earning: "USDX80", DirectJoin: "2/2", Task: "Completed" },
-  { SNo: 3, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 4, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
-  { SNo: 5, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
-  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-   
-  
-  // Other gold transactions
-];
-
-const transactionsSilver = [
-  { SNo: 1, Earning: "USDX20", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  // Other silver transactions
-];
-
-const transactionsDiamond = [
-  { SNo: 1, Earning: "USDX50", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
-  // Other diamond transactions
-];
-
-
-const transactionsBronze = [
-  { SNo: 1, Earning: "USDX50", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 5, Earning: "USDX80", DirectJoin: "2/2", Task: "Completed" },
-  { SNo: 6, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 7, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 8, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 9, Earning: "USDX30", DirectJoin: "2/2",  Task: "Completed" },
-  { SNo: 10, Earning: "USDX30", DirectJoin: "2/2", Task: "Completed" },
-  // Other diamond transactions
-];
+import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
+import { useEffect, useState } from "react";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
@@ -64,11 +17,25 @@ const HeroSection = () => {
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
   console.log({ dataArray });
 
-  const PolluxWeb = new polluxWeb({
-    fullHost: "https://testnet-fullnode.poxscan.io",
-    privateKey:
-      "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
-  });
+  const [silverData, setSilverData] = useState([]);
+  const [goldData, setGoldData] = useState([]);
+  const [bronzeData, setBronzeData] = useState([]);
+  const [diamondData, setDiamondData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const slotData = await slotApi(dataArray?.[0]?.userAddress);
+        setSilverData(slotData?.data?.silver);
+        setGoldData(slotData?.data?.gold);
+        setBronzeData(slotData?.data?.bronze);
+        setDiamondData(slotData?.data?.diamond);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleContractCopy = () => {
     const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
@@ -83,72 +50,15 @@ const HeroSection = () => {
   };
 
   const handleWithdrawl = async () => {
-    if (Number(dataArray?.[0]?.[14]?.hex) === 0) {
+    if (!dataArray?.[0]?.eligibleForWithdraw) {
       toast.error("Not eligible for withdrawal!");
       return;
     }
 
-    let parameter = [];
-    const options = { feeLimit: 1900000000 };
-    const functions = "withdraw()";
-    const issuerAddress = dataArray?.[0]?.[1];
-    // Format
-    const transaction = await PolluxWeb.transactionBuilder.triggerSmartContract(
-      SPOT_ADDRESS,
-      functions,
-      options,
-      parameter,
-      issuerAddress
-    );
-    console.log(transaction);
-    const signedData2 = await window.pox.signdata(transaction.transaction);
-    console.log({ signedData2 });
-    if (signedData2[0]) {
-      let a = JSON.parse(signedData2[1]);
-      await PolluxWeb.trx.sendRawTransaction(a);
-      console.log({ a });
-      const MAX_ATTEMPTS = 5;
-      const DELAY = 2000;
+    const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
+    console.log(withdrawApiData);
 
-      let attempt = 0;
-      let verify = null;
-
-      while (attempt < MAX_ATTEMPTS) {
-        const response = await axios.post(
-          "https://testnet-fullnode.poxscan.io/wallet/gettransactioninfobyid",
-          {
-            value: a?.txID,
-          }
-        );
-
-        console.log(response?.data);
-
-        if (response?.data?.receipt) {
-          console.log("kuch bhi", response?.data);
-          verify = response?.data?.receipt;
-          break; // Exit loop if found
-        }
-
-        attempt++;
-        if (attempt < MAX_ATTEMPTS) {
-          await new Promise((resolve) => setTimeout(resolve, DELAY)); // Delay for 3 seconds
-        }
-      }
-
-      if (verify?.result === "REVERT") {
-        toast.error("Withdrawal Failed");
-        return;
-      }
-
-      if (errorMsg === "Not eligible for withdrawal") {
-        toast.error("Not eligible for withdrawal");
-        return;
-      }
-
-      toast.success("Withdrawal successfully");
-
-      console.log(verify);
-    }
+    toast.success("Withdrawal successfully");
   };
 
   return (
@@ -162,17 +72,13 @@ const HeroSection = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
             <div className="bg-[#151515] flex items-center justify-between space-x-8 p-6 rounded-2xl w-full lg:w-[50%]  overflow-hidden">
               <p className="text-[#8A8A8A] font-medium truncate">
-                Referral Link: {PolluxWeb.address.fromHex(dataArray?.[0]?.[1])}
+                Referral Link: {dataArray?.[0]?.userAddress}
               </p>
               <FaCopy
                 color="white"
                 size={24}
                 className="cursor-pointer"
-                onClick={() =>
-                  handleReferralCopy(
-                    PolluxWeb.address.fromHex(dataArray?.[0]?.[1])
-                  )
-                }
+                onClick={() => handleReferralCopy(dataArray?.[0]?.userAddress)}
               />
             </div>
 
@@ -219,8 +125,8 @@ const HeroSection = () => {
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
-                    {dataArray?.[0]?.[14]?.hex
-                      ? Number(dataArray?.[0]?.[14]?.hex)
+                    {dataArray?.[0]
+                      ? Number(dataArray?.[0]?.availableBalance).toFixed(6)
                       : 0}
                   </p>
                 </div>
@@ -232,8 +138,8 @@ const HeroSection = () => {
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
-                    {dataArray?.[0]?.[15]?.hex
-                      ? Number(dataArray?.[0]?.[15]?.hex)
+                    {dataArray?.[0]
+                      ? Number(dataArray?.[0]?.claimedBalance).toFixed(6)
                       : 0}
                   </p>
                 </div>
@@ -299,11 +205,12 @@ const HeroSection = () => {
 
         {/* Slot Table Record */}
         <div>
-      <SlotTable title="Silver" transactions={transactionsGold} />
-      <SlotTable title="Gold" transactions={transactionsSilver} />
-      <SlotTable title="Bronze" transactions={transactionsDiamond} />
-      <SlotTable title="Diamond" transactions={transactionsBronze} /> {/* Empty list for no data example */}
-    </div>
+          <SlotTable title="Silver" transactions={silverData} />
+          <SlotTable title="Gold" transactions={goldData} />
+          <SlotTable title="Bronze" transactions={bronzeData} />
+          <SlotTable title="Diamond" transactions={diamondData} />{" "}
+          {/* Empty list for no data example */}
+        </div>
       </div>
     </div>
   );

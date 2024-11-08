@@ -1,21 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { slotApi } from "../utils/axios/apisFunction";
+import { useSelector } from "react-redux";
 
 const SlotTable = ({ title, transactions }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [silverSlotData, setSilverSlotData] = useState(false);
+   
+  
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const silverSlotData = await getSilverSlotData();
-  //       setData(silverSlotData?.message);
-       
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+
+
 
   return (
     <div className="bg-black h-auto pt-0">
@@ -67,17 +60,17 @@ const SlotTable = ({ title, transactions }) => {
               className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
             >
               <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
-                {data.SNo}
+                {data.srNo }
               </span>
               <span className="text-[#8A8A8A] text-md font-semibold w-[25%] text-center">
-                {data.Earning}
+                {data.earning}
               </span>
               <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
-                {data.DirectJoin}
+                {data.direct}
               </span>
               
               <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
-                {data.Task}
+                {data.task}
               </span>
             </div>
           ))}

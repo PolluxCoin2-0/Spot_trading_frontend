@@ -8,11 +8,9 @@ const CountdownTimer = () => {
 
   useEffect(() => {
     // Check if dataArray is loaded and contains the timestamp
-    if (dataArray && dataArray.length > 0 && dataArray?.[0]?.[6]) {
-      const timestampHex = dataArray?.[0]?.[6];
-      const parsedTimestamp = timestampHex?.hex
-        ? parseInt(timestampHex.hex, 16)
-        : 0;
+    if (dataArray && dataArray.length > 0 && dataArray[0]?.timestamp) {
+      const timestampStr = dataArray[0].timestamp;
+      const parsedTimestamp = Math.floor(new Date(timestampStr).getTime() / 1000); // Convert to seconds
       setOriginalTimestamp(parsedTimestamp);
     }
   }, [dataArray]); // Trigger this effect when dataArray updates
