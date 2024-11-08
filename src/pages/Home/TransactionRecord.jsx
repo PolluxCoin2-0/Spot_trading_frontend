@@ -27,7 +27,9 @@ const TransactionRecord = () => {
         console.log("error", error);
       }
     };
-    fetchData();
+    if(dataArray?.[0]?.userAddress){
+      fetchData();
+    }
   }, [dataArray?.[0]?.userAddress]);
 
   const handlePageChange = (pageNumber) => {

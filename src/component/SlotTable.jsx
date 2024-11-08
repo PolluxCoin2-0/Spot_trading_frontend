@@ -1,14 +1,7 @@
-import { useEffect, useState } from "react";
-import { slotApi } from "../utils/axios/apisFunction";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
-const SlotTable = ({ title, transactions }) => {
+const SlotTable = ({ title, transactions, color }) => {
   const [isLoading, setIsLoading] = useState(false);
-   
-  
-
-
-
 
   return (
     <div className="bg-black h-auto pt-0">
@@ -48,7 +41,7 @@ const SlotTable = ({ title, transactions }) => {
             <span className="text-white text-sm md:text-lg font-bold w-[20%] text-center">
               Direct Joinings
             </span>
-            
+
             <span className="text-white text-sm md:text-lg font-bold w-[20%] text-center">
               Task
             </span>
@@ -57,10 +50,10 @@ const SlotTable = ({ title, transactions }) => {
           {transactions.map((data, index) => (
             <div
               key={index}
-              className="flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full"
+              className={`flex flex-row justify-between border-b-[1px] border-[#454545] pt-6 pb-4 w-full ${color}`}
             >
               <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
-                {data.srNo }
+                {data.srNo}
               </span>
               <span className="text-[#8A8A8A] text-md font-semibold w-[25%] text-center">
                 {data.earning}
@@ -68,7 +61,7 @@ const SlotTable = ({ title, transactions }) => {
               <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
                 {data.direct}
               </span>
-              
+
               <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
                 {data.task}
               </span>
@@ -76,7 +69,9 @@ const SlotTable = ({ title, transactions }) => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-xl text-white font-bold">No Data Found</p>
+        <p className="text-center text-xl text-white font-bold">
+          No Data Found
+        </p>
       )}
     </div>
   );

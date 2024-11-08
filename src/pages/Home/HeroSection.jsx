@@ -34,7 +34,9 @@ const HeroSection = () => {
         console.log(error);
       }
     };
-    fetchData();
+    if(dataArray?.[0]?.userAddress){
+      fetchData();
+    }
   }, []);
 
   const handleContractCopy = () => {
@@ -205,7 +207,7 @@ const HeroSection = () => {
 
         {/* Slot Table Record */}
         <div>
-          <SlotTable title="Silver" transactions={silverData} />
+          <SlotTable title="Silver" color="#C0C0C0" transactions={silverData} />
           <SlotTable title="Gold" transactions={goldData} />
           <SlotTable title="Bronze" transactions={bronzeData} />
           <SlotTable title="Diamond" transactions={diamondData} />{" "}
