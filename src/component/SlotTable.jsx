@@ -14,9 +14,12 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
     
     <div className="bg-black h-auto pt-0"
    >
-      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10 ">
+    <div className="flex justify-center mt-16 mb-16">
+      <p className=" flex flex-row justify-center items-center text-lg md:text-3xl   bg-[linear-gradient(to_right,#FFE27A,#FFBA57,#98DB7C,#8BCAFF)] text-black font-bold   px-16 py-4 md:px-6 rounded-full
+             ">
         {title} Slot
       </p>
+      </div>
 
       {isLoading ? (
         <div role="status" className="flex justify-center">
