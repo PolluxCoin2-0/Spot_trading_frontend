@@ -5,7 +5,7 @@ const SlotTable = ({ title, transactions, color1, color2 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
  // Define colors with 10% opacity
-const color1WithOpacity = "rgba(113, 254, 254, 0.06)"; // 10% opacity for color1 (#71FEFE)
+const color1WithOpacity = "rgba(113, 254, 254, 0.6)"; // 10% opacity for color1 (#71FEFE)
 const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2 (#3DCEFE)
 
 
@@ -14,7 +14,7 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
     
     <div className="bg-black h-auto pt-0"
    >
-      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10">
+      <p className="text-[#FFCF56] text-center text-2xl md:text-4xl font-bold pt-10 pb-10 ml-20 mb-20 ">
         {title} Slot
       </p>
 
@@ -42,7 +42,7 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
       ) : transactions?.length > 0 ? (
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 pb-20 ">
           <div className="flex flex-row justify-between  pb-5 w-full">
-            <span className="text-white text-sm md:text-lg font-bold w-[15%] text-center">
+            <span className="text-white text-sm md:text-lg font-bold w-[15%] text-center ">
               Sr.No
             </span>
             <span className="text-white text-sm md:text-lg font-bold w-[25%] text-center">
@@ -67,17 +67,17 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
               }}
               
             >
-              <span className="text-[#8A8A8A] text-md font-semibold w-[15%] text-center">
+              <span className="text-[#ffffff] text-md font-bold w-[15%] text-center">
                 {data.srNo}
               </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[25%] text-center">
+              <span className="text-[#ffffff] text-md font-bold w-[25%] text-center">
                 {data.earning}
               </span>
-              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
+              <span className="text-[#ffffff] text-md font-bold w-[20%] text-center">
                 {data.direct}
               </span>
 
-              <span className="text-[#8A8A8A] text-md font-semibold w-[20%] text-center">
+              <span className="text-[#ffffff] text-md font-bold w-[20%] text-center">
                 {data.task}
               </span>
             </div>

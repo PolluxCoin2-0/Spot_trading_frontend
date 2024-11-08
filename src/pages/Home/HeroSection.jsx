@@ -11,7 +11,6 @@ import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
 
 
-
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 
@@ -71,7 +70,6 @@ const HeroSection = () => {
         <Navbar />
       </div>
       <div className="bg-black min-h-screen pt-12"
-       
        >
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
