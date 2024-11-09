@@ -8,10 +8,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDataObject } from "../../redux/slice";
 import Loader from "../../component/Loader";
-import { checkReferStatusApi, registerApi, verifyWalletAddressApi } from "../../utils/axios/apisFunction";
+import {
+  checkReferStatusApi,
+  registerApi,
+  verifyWalletAddressApi,
+} from "../../utils/axios/apisFunction";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const USDX_ADDRESS = import.meta.env.VITE_Usdx;
+const FULL_NODE_URL = import.meta.env.VITE_FULL_HOST;
+const FULL_NODE_TRANSACTION_URL = import.meta.env
+  .VITE_FULL_NODE_TRANSACTION_URL;
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -39,44 +46,44 @@ const Register = () => {
       setLoading(true);
       const walletAddress = await getPolinkweb();
       console.log(walletAddress);
-    // check usdx balance
-    if (walletAddress?.USDX < 30) {
-      toast.error("Insufficient USDX!");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const verifyWalletData = await verifyWalletAddressApi(walletAddress?.wallet_address);
-    console.log(verifyWalletData);
-
-    if (walletAddress) {
-      setMyAddress(walletAddress?.wallet_address);
-    }
-    } catch (error) {
-      if(error?.response?.data?.message==="user already registered..!"){
-        toast.error("User already registered..!");
-      setLoading(false);
-return;
+      // check usdx balance
+      if (walletAddress?.USDX < 30) {
+        toast.error("Insufficient USDX!");
+        setLoading(false);
+        return;
       }
-    }
-    
+
+      try {
+        const verifyWalletData = await verifyWalletAddressApi(
+          walletAddress?.wallet_address
+        );
+        console.log(verifyWalletData);
+
+        if (walletAddress) {
+          setMyAddress(walletAddress?.wallet_address);
+        }
+      } catch (error) {
+        if (error?.response?.data?.message === "user already registered..!") {
+          toast.error("User already registered..!");
+          setLoading(false);
+          return;
+        }
+      }
     } catch (error) {
       console.log(error);
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
 
   const PolluxWeb = new polluxWeb({
-    fullHost: "https://testnet-fullnode.poxscan.io",
+    fullHost: FULL_NODE_URL,
     privateKey:
       "C23F1733C3B35A7A236C7FB2D7EA051D57302228F92F26A7B5E01F0361C3A75C",
   });
 
   const handleRegister = async () => {
-
-    if(!myAddress || !referralAddress){
+    if (!myAddress || !referralAddress) {
       toast.error("Enter both input fields");
       return;
     }
@@ -85,18 +92,18 @@ return;
       toast.warning("Register in progress....");
       return;
     }
-     
+
     try {
       const referApiData = await checkReferStatusApi(referralAddress);
       console.log(referApiData);
     } catch (error) {
       console.log(error);
-      if(error?.response?.data?.message === 'Invalid referer address'){
-        toast.error("Invalid referer address")
+      if (error?.response?.data?.message === "Invalid referer address") {
+        toast.error("Invalid referer address");
         return;
       }
     }
- 
+
     try {
       setRegisterLoading(true);
       // Both feilds are not empty
@@ -146,12 +153,9 @@ return;
           let verify = null;
 
           while (attempt < MAX_ATTEMPTS) {
-            const response = await axios.post(
-              "https://testnet-fullnode.poxscan.io/wallet/gettransactioninfobyid",
-              {
-                value: a?.txID,
-              }
-            );
+            const response = await axios.post(FULL_NODE_TRANSACTION_URL, {
+              value: a?.txID,
+            });
 
             console.log(response?.data);
 
@@ -174,22 +178,25 @@ return;
             setRegisterLoading(false);
             return;
           }
-          
+
           try {
-            const registerDetails = await registerApi(a?.txID, myAddress, referralAddress);
-            console.log( registerDetails?.response?.data?.message);
-             // setDataObject
-          dispatch(setDataObject(registerDetails?.newUser));
-          toast.success("Registration Done...!");
-          navigate("/dashboard");
+            const registerDetails = await registerApi(
+              a?.txID,
+              myAddress,
+              referralAddress
+            );
+            console.log(registerDetails?.response?.data?.message);
+            // setDataObject
+            dispatch(setDataObject(registerDetails?.newUser));
+            toast.success("Registration Done...!");
+            navigate("/dashboard");
           } catch (error) {
             console.log(error);
-            if(error?.response?.data?.message === 'User already Registered'){
-              toast.error("User already Registered")
+            if (error?.response?.data?.message === "User already Registered") {
+              toast.error("User already Registered");
               return;
             }
           }
-
         } else {
           toast.error("error in data");
 
