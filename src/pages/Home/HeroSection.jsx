@@ -31,7 +31,22 @@ const HeroSection = () => {
     const fetchData = async () => {
       try {
         const slotData = await slotApi(dataArray?.[0]?.userAddress);
-        setSilverData(slotData?.data?.silver);
+        console.log(slotData?.data);
+        const silverDataArray = slotData?.data?.silver || [];
+
+        // Combine the first two objects and then add the rest of the items as-is
+        const combinedSilverData = [
+          {
+            direct: `${silverDataArray[0]?.direct || "0"}`,
+            earning: `${
+              parseFloat(silverDataArray[0]?.earning || "0") + parseFloat(silverDataArray[1]?.earning || "0")
+            } USDX`,
+            srNo: 1,
+            task: silverDataArray[0]?.task, // or any other logic for the task property
+          },
+          ...silverDataArray.slice(2), // Include the remaining items as-is
+        ];
+        setSilverData(combinedSilverData);
         setGoldData(slotData?.data?.gold);
         setBronzeData(slotData?.data?.bronze);
         setDiamondData(slotData?.data?.diamond);
@@ -85,8 +100,6 @@ console.log("render");
     } finally{
       setIsLoading(false);
     }
-
-   
   };
 
   return (

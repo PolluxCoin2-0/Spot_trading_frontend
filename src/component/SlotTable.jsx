@@ -71,7 +71,7 @@ const color2WithOpacity = "rgba(61, 206, 254, 0.01)";  // 10% opacity for color2
               
             >
               <span className="text-[#ffffff] text-md font-bold w-[15%] text-center">
-                {data.srNo}
+                {index+1}
               </span>
               <span className="text-[#ffffff] text-md font-bold w-[25%] text-center">
                 {data.earning}
