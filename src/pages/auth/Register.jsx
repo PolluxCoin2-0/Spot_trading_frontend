@@ -117,6 +117,7 @@ const Register = () => {
 
       const approvalRawData = await rawTxnApprove(SPOT_ADDRESS);
       const rawD = await rawDatApprove(approvalRawData);
+      console.log(rawD);
       if (window.pox) {
         const signedData1 = await window.pox.signdata(rawD);
         console.log({ signedData1 });
@@ -218,7 +219,7 @@ const Register = () => {
     try {
       // const hexRefer = PolluxWeb.address.toHex(refer);
       const dat = await axios.post(
-        "https://testnet-fullnode.poxscan.io/wallet/triggersmartcontract",
+        FULL_NODE_URL + "/wallet/triggersmartcontract",
         {
           owner_address: myAddress,
           contract_address: USDX_ADDRESS,
@@ -239,9 +240,9 @@ const Register = () => {
     try {
       // const hexRefer = PolluxWeb.address.toHex(refer);
       // console.log({ myAddress, SPOT_ADDRESS, hexRefer });
-
+console.log( FULL_NODE_URL + "/wallet/triggersmartcontract");
       const dat = await axios.post(
-        "https://testnet-fullnode.poxscan.io/wallet/triggersmartcontract",
+       FULL_NODE_URL + "/wallet/triggersmartcontract",
         {
           owner_address: myAddress,
           contract_address: SPOT_ADDRESS,
