@@ -93,6 +93,8 @@ const Register = () => {
       return;
     }
 
+    setRegisterLoading(true);
+
     try {
       const referApiData = await checkReferStatusApi(referralAddress);
       console.log(referApiData);
@@ -100,12 +102,12 @@ const Register = () => {
       console.log(error);
       if (error?.response?.data?.message === "Invalid referer address") {
         toast.error("Invalid referer address");
+      setRegisterLoading(false);
         return;
       }
     }
 
     try {
-      setRegisterLoading(true);
       // Both feilds are not empty
       if (!myAddress || !referralAddress) {
         toast.error("Enter values in both fields.");
