@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDataObject } from "../../redux/slice";
 import Loader from "../../component/Loader";
-import { checkReferStatusApi, registerApi } from "../../utils/axios/apisFunction";
+import { checkReferStatusApi, registerApi, verifyWalletAddressApi } from "../../utils/axios/apisFunction";
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const USDX_ADDRESS = import.meta.env.VITE_Usdx;
@@ -46,9 +46,21 @@ const Register = () => {
       return;
     }
 
+    try {
+      const verifyWalletData = await verifyWalletAddressApi(walletAddress?.wallet_address);
+    console.log(verifyWalletData);
+
     if (walletAddress) {
       setMyAddress(walletAddress?.wallet_address);
     }
+    } catch (error) {
+      if(error?.response?.data?.message==="user already registered..!"){
+        toast.error("User already registered..!");
+      setLoading(false);
+return;
+      }
+    }
+    
     } catch (error) {
       console.log(error);
     } finally{

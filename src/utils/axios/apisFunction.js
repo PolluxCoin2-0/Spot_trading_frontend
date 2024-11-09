@@ -81,3 +81,7 @@ export const slotApi = async (userAddress) => {
 export const checkReferStatusApi = async (refer) => {
   return getRequest(API_ENDPOINTS.user.getReferStatus + `?refer=${refer}`);
 }
+
+export const verifyWalletAddressApi = async (walletAddress) => {
+  return getRequest(API_ENDPOINTS.user.verifyWalletAddress + `?userAddress=${walletAddress}`);
+}

@@ -9,7 +9,7 @@ const API_ENDPOINTS = {
         getWithdraw: "/reqWithdraw",
         getSlot: "/getSlot",
         getReferStatus: "/checkRefer",
-       
+       verifyWalletAddress :"/validateAddress",
       },
    
   };
