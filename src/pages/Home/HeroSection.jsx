@@ -5,17 +5,19 @@ import CountdownTimer from "../../component/CountdownTimer";
 import SlotTable from "../../component/SlotTable";
 import Navbar from "../../layout/Navbar";
 import polluxWeb from "polluxweb";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { loginApi, slotApi, withdrawApi } from "../../utils/axios/apisFunction";
+import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
 import Loader from "../../component/Loader";
+import { setDataObject } from "../../redux/slice";
 
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
 
 const HeroSection = () => {
+  const dispatch = useDispatch();
   const dataArray = useSelector((state) => state?.wallet?.dataObject);
   console.log({ dataArray });
 
@@ -40,7 +42,7 @@ const HeroSection = () => {
     if(dataArray?.[0]?.userAddress){
       fetchData();
     }
-  }, [dataArray[0]]);
+  }, []);
 
 console.log("render");
 
@@ -70,11 +72,11 @@ console.log("render");
     try {
       setIsLoading(true);
       const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
-      console.log(withdrawApiData);
-      const loginDetails = await loginApi(dataArray?.[0]?.userAddress);
-      console.log({loginDetails});
-      dispatch(setDataObject(loginDetails?.data));
-      toast.success("Withdrawal successfully");
+      console.log("withdrwwal",withdrawApiData);
+      if(withdrawApiData?.status_code === '1'){
+        dispatch(setDataObject(withdrawApiData?.data?.user));
+        toast.success("Withdrawal has been placed");
+      }
     } catch (error) {
       console.log("withdrawal error", error);
       if(error?.response?.data?.message  === "No balance"){
