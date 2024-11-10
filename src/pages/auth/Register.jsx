@@ -101,7 +101,7 @@ const Register = () => {
     } catch (error) {
       console.log(error);
       if (error?.response?.data?.message === "Invalid referer address") {
-        toast.error("Invalid referer address");
+        toast.error(error?.response?.data?.message);
       setRegisterLoading(false);
         return;
       }
@@ -114,8 +114,8 @@ const Register = () => {
         return;
       }
 
-      const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
-      const isMyAddressRegistered = await address.user(myAddress).call();
+      // const address = await PolluxWeb.contract().at(SPOT_ADDRESS);
+      // const isMyAddressRegistered = await address.user(myAddress).call();
 
       const approvalRawData = await rawTxnApprove(SPOT_ADDRESS);
       const rawD = await rawDatApprove(approvalRawData);
@@ -196,7 +196,7 @@ const Register = () => {
           } catch (error) {
             console.log(error);
             if (error?.response?.data?.message === "User already Registered") {
-              toast.error("User already Registered");
+              toast.error(error?.response?.data?.message);
               return;
             }
           }
