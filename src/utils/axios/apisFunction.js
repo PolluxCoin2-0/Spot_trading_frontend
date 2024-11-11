@@ -85,3 +85,7 @@ export const checkReferStatusApi = async (refer) => {
 export const verifyWalletAddressApi = async (walletAddress) => {
   return getRequest(API_ENDPOINTS.user.verifyWalletAddress + `?userAddress=${walletAddress}`);
 }
+
+export const getMatrixRecordsApi = async (walletAddress) => {
+  return getRequest(API_ENDPOINTS.user.getMatrixRecord + `?userAddress=${walletAddress}`);
+}

@@ -11,6 +11,7 @@ import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
 import Loader from "../../component/Loader";
 import { setDataObject } from "../../redux/slice";
+import MatrixCard from "../../component/MatrixCard";
 
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
@@ -192,22 +193,9 @@ console.log("render");
 
         {/* Matrix Details and Withdraw */}
         <div className="flex flex-col md:flex-row justify-center  space-x-0 md:space-x-6 lg:space-x-10 px-6 md:px-8 lg:px-16 2xl:px-24 mt-10 w-full">
-          {/* <div className="w-full md:w-[50%] bg-[#151515]  rounded-3xl shadow-inner shadow-[#464545]">
-            <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-3 pb-3 shadow-inner shadow-[#464545]">
-              MATRIX DETAILS
-            </p>
-            <div className=" p-8">
-              <p className="text-[#8A8A8A] font-semibold text-xl  ">
-                Matrix Details :{" "}
-                {dataArray?.[0]?.[10]?._hex
-                  ? Number(dataArray?.[0]?.[10]?._hex)
-                  : 0}
-              </p>
-              {/* <p className="text-[#8A8A8A] font-semibold text-lg pt-4">
-                Min $10 Max $200.....
-              </p> */}
-          {/* </div>
-          </div> */}
+          <div className="w-full md:w-[50%]  bg-[#151515]  rounded-3xl shadow-inner shadow-[#464545]">
+            <MatrixCard/>
+          </div>
 
           <div className="w-full md:w-[50%] bg-[#151515]  rounded-3xl pb-8 shadow-inner shadow-[#464545] mt-6 md:mt-0">
             <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-2 pb-3 shadow-inner shadow-[#464545]">
