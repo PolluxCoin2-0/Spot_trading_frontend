@@ -24,7 +24,7 @@ const MatrixCard = ({matrixRecord}) => {
                 : "Loading..."}
             </p>
 
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <p
                 className={`font-bold text-base py-1 rounded ${
                   item.isSlotFilled ? " text-green-600" : " text-red-600"
@@ -32,7 +32,7 @@ const MatrixCard = ({matrixRecord}) => {
               >
                 {item.isSlotFilled ? "Slot Filled" : "Slot Open"}
               </p>
-            </div>
+            </div> */}
             <p className="mt-4 text-white font-semibold text-sm">
               Parent: {item.parent}
             </p>
