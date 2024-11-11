@@ -32,7 +32,7 @@ const Login = () => {
 
       // console.log("Got wallet address", walletAddress);
       try {
-        const loginDetails = await loginApi("PQ1tpBsf2ig2P214FGat2VcFFnTiEkRxch");
+        const loginDetails = await loginApi(walletAddress?.wallet_address);
         dispatch(setDataObject(loginDetails?.data));
         navigate("/dashboard");
       } catch (error) {
