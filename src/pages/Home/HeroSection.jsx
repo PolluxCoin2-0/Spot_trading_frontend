@@ -4,15 +4,17 @@ import LRImg from "../../assets/lrImg.png";
 import CountdownTimer from "../../component/CountdownTimer";
 import SlotTable from "../../component/SlotTable";
 import Navbar from "../../layout/Navbar";
-import polluxWeb from "polluxweb";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { slotApi, withdrawApi } from "../../utils/axios/apisFunction";
+import {
+  getMatrixRecordsApi,
+  slotApi,
+  withdrawApi,
+} from "../../utils/axios/apisFunction";
 import { useEffect, useState } from "react";
 import Loader from "../../component/Loader";
 import { setDataObject } from "../../redux/slice";
 import MatrixCard from "../../component/MatrixCard";
-
 
 const SPOT_ADDRESS = import.meta.env.VITE_Spot;
 const REFERRAL_BASE_URL = import.meta.env.VITE_Referral_Link;
@@ -27,6 +29,7 @@ const HeroSection = () => {
   const [bronzeData, setBronzeData] = useState([]);
   const [diamondData, setDiamondData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [matrixRecord, setMatrixRecord] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,14 +37,17 @@ const HeroSection = () => {
         const slotData = await slotApi(dataArray?.[0]?.userAddress);
         console.log(slotData?.data);
         const silverDataArray = slotData?.data?.silver || [];
-        const isTaskCompleted = silverDataArray[0]?.task === "completed" && silverDataArray[1]?.task === "completed";
+        const isTaskCompleted =
+          silverDataArray[0]?.task === "completed" &&
+          silverDataArray[1]?.task === "completed";
 
         // Combine the first two objects and then add the rest of the items as-is
         const combinedSilverData = [
           {
             direct: `${silverDataArray[0]?.direct || "0"}`,
             earning: `${
-              parseFloat(silverDataArray[0]?.earning || "0") + parseFloat(silverDataArray[1]?.earning || "0")
+              parseFloat(silverDataArray[0]?.earning || "0") +
+              parseFloat(silverDataArray[1]?.earning || "0")
             } USDX`,
             srNo: 1,
             task: isTaskCompleted ? "Completed" : "Wait", // or any other logic for the task property
@@ -55,14 +61,29 @@ const HeroSection = () => {
       } catch (error) {
         console.log(error);
       }
+
+      try {
+        const matrixRecordData = await getMatrixRecordsApi(
+          dataArray?.[0]?.userAddress
+        );
+        console.log({ matrixRecordData });
+        if (matrixRecordData.status_code === "1") {
+          const dataToDisplay =
+            matrixRecordData.data.length > 0
+              ? matrixRecordData.data.slice(-2)
+              : [];
+          setMatrixRecord(dataToDisplay);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
     };
-    if(dataArray?.[0]?.userAddress){
+    if (dataArray?.[0]?.userAddress) {
       fetchData();
     }
   }, []);
 
-console.log("render");
-
+  console.log("render");
 
   const handleContractCopy = () => {
     const contractLink = `https://poxscan.io/address-account/${SPOT_ADDRESS}`;
@@ -77,7 +98,7 @@ console.log("render");
   };
 
   const handleWithdrawl = async () => {
-    if(isLoading){
+    if (isLoading) {
       return;
     }
 
@@ -85,21 +106,21 @@ console.log("render");
       toast.error("Not eligible for withdrawal!");
       return;
     }
-    
+
     try {
       setIsLoading(true);
       const withdrawApiData = await withdrawApi(dataArray?.[0]?.userAddress);
-      console.log("withdrwwal",withdrawApiData);
-      if(withdrawApiData?.status_code === '1'){
+      console.log("withdrwwal", withdrawApiData);
+      if (withdrawApiData?.status_code === "1") {
         dispatch(setDataObject(withdrawApiData?.data?.user));
         toast.success("Withdrawal has been placed");
       }
     } catch (error) {
       console.log("withdrawal error", error);
-      if(error?.response?.data?.message){
+      if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       }
-    } finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -109,8 +130,7 @@ console.log("render");
       <div>
         <Navbar />
       </div>
-      <div className="bg-black min-h-screen pt-12"
-       >
+      <div className="bg-black min-h-screen pt-12">
         {/* referral address and contract address */}
         <div className="px-6 md:px-8 lg:px-16 2xl:px-24 ">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 space-x-0 lg:space-x-8 xl:space-x-10 mb-8 ">
@@ -169,9 +189,7 @@ console.log("render");
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
-                    {dataArray?.[0]
-                      ? dataArray?.[0]?.availableBalance
-                      : 0}
+                    {dataArray?.[0] ? dataArray?.[0]?.availableBalance : 0}
                   </p>
                 </div>
               </div>
@@ -182,9 +200,7 @@ console.log("render");
                 </p>
                 <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl shadow-inner shadow-[#464545]">
                   <p className="text-white font-bold truncate text-2xl">
-                    {dataArray?.[0]
-                      ? dataArray?.[0]?.claimedBalance
-                      : 0}
+                    {dataArray?.[0] ? dataArray?.[0]?.claimedBalance : 0}
                   </p>
                 </div>
               </div>
@@ -194,13 +210,17 @@ console.log("render");
 
         {/* Matrix Details and Withdraw */}
         <div className="flex flex-col md:flex-row justify-center  space-x-0 md:space-x-6 lg:space-x-10 px-6 md:px-8 lg:px-16 2xl:px-24 mt-10 w-full">
-          <div className="w-full md:w-[50%]  bg-[#151515]  rounded-3xl shadow-inner shadow-[#464545]">
-            <MatrixCard/>
-          </div>
+          {matrixRecord.length > 0 ? (
+            <div className="w-full md:w-[50%] bg-transparent md:bg-[#151515] rounded-3xl shadow-inner md:shadow-[#464545]">
+              <MatrixCard matrixRecord={matrixRecord} />
+            </div>
+          ) : (
+            ""
+          )}
 
           <div className="w-full md:w-[50%] bg-[#151515]  rounded-3xl pb-8 shadow-inner shadow-[#464545] mt-6 md:mt-0">
             <p className=" text-center text-white text-xl font-semibold bg-[#1a1919] rounded-tl-2xl rounded-tr-2xl pt-2 pb-3 shadow-inner shadow-[#464545]">
-           WITHDRAW
+              WITHDRAW
             </p>
             <div className="p-8 md:p-4 lg:p-8 flex flex-col md:flex-row justify-between space-x-0 md:space-x-3 lg:space-x-6 items-center w-full mt-4">
               <div className="w-full md:w-[40%] xl:w-[20%] flex flex-row items-center justify-center space-x-2 bg-[#1a1919] pt-1 pb-1 rounded-lg">
@@ -218,7 +238,7 @@ console.log("render");
                              rounded-lg shadow-lg hover:shadow-xl transition-all w-full"
                   onClick={handleWithdrawl}
                 >
-                    {isLoading ? <Loader/> : "Withdraw"}
+                  {isLoading ? <Loader /> : "Withdraw"}
                 </button>
               </div>
             </div>
@@ -236,10 +256,30 @@ console.log("render");
 
         {/* Slot Table Record */}
         <div>
-          <SlotTable title="Silver" color1="#71FEFE"  color2="#3DCEFE" transactions={silverData} />
-          <SlotTable title="Gold" color1="#71FEFE"  color2="#3DCEFE" transactions={goldData} />
-          <SlotTable title="Bronze" color1="#71FEFE"  color2="#3DCEFE" transactions={bronzeData} />
-          <SlotTable title="Diamond" color1="#71FEFE"  color2="#3DCEFE" transactions={diamondData} />{" "}
+          <SlotTable
+            title="Silver"
+            color1="#71FEFE"
+            color2="#3DCEFE"
+            transactions={silverData}
+          />
+          <SlotTable
+            title="Gold"
+            color1="#71FEFE"
+            color2="#3DCEFE"
+            transactions={goldData}
+          />
+          <SlotTable
+            title="Bronze"
+            color1="#71FEFE"
+            color2="#3DCEFE"
+            transactions={bronzeData}
+          />
+          <SlotTable
+            title="Diamond"
+            color1="#71FEFE"
+            color2="#3DCEFE"
+            transactions={diamondData}
+          />{" "}
           {/* Empty list for no data example */}
         </div>
       </div>
