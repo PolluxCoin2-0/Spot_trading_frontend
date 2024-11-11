@@ -34,6 +34,7 @@ const HeroSection = () => {
         const slotData = await slotApi(dataArray?.[0]?.userAddress);
         console.log(slotData?.data);
         const silverDataArray = slotData?.data?.silver || [];
+        const isTaskCompleted = silverDataArray[0]?.task === "completed" && silverDataArray[1]?.task === "completed";
 
         // Combine the first two objects and then add the rest of the items as-is
         const combinedSilverData = [
@@ -43,7 +44,7 @@ const HeroSection = () => {
               parseFloat(silverDataArray[0]?.earning || "0") + parseFloat(silverDataArray[1]?.earning || "0")
             } USDX`,
             srNo: 1,
-            task: silverDataArray[0]?.task, // or any other logic for the task property
+            task: isTaskCompleted ? "Completed" : "Wait", // or any other logic for the task property
           },
           ...silverDataArray.slice(2), // Include the remaining items as-is
         ];
@@ -95,8 +96,8 @@ console.log("render");
       }
     } catch (error) {
       console.log("withdrawal error", error);
-      if(error?.response?.data?.message  === "No balance"){
-        toast.error("No balance!");
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message);
       }
     } finally{
       setIsLoading(false);
