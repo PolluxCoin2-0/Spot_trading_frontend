@@ -67,16 +67,30 @@ const HeroSection = () => {
           dataArray?.[0]?.userAddress
         );
         console.log({ matrixRecordData });
+        
         if (matrixRecordData.status_code === "1") {
           const dataToDisplay =
             matrixRecordData.data.length > 0
               ? matrixRecordData.data.slice(-2)
               : [];
-          setMatrixRecord(dataToDisplay);
+      
+          const modifiedData = dataToDisplay.map((item, index, array) => {
+            if (array.length === 1) {
+              return { ...item, level: "Current" };
+            } else {
+              return {
+                ...item,
+                level: index === 0 ? "Last" : "Current"
+              };
+            }
+          });
+      
+          setMatrixRecord(modifiedData);
         }
       } catch (error) {
         console.error("Error fetching data", error);
       }
+      
     };
     if (dataArray?.[0]?.userAddress) {
       fetchData();
@@ -212,7 +226,7 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row justify-center  space-x-0 md:space-x-6 lg:space-x-10 px-6 md:px-8 lg:px-16 2xl:px-24 mt-10 w-full">
           {matrixRecord.length > 0 ? (
             <div className="w-full md:w-[50%] bg-transparent md:bg-[#151515] rounded-3xl shadow-inner md:shadow-[#464545]">
-              <MatrixCard matrixRecord={matrixRecord} />
+              <MatrixCard matrixRecord={matrixRecord} length={matrixRecord.length} />
             </div>
           ) : (
             ""

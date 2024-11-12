@@ -1,5 +1,5 @@
-const MatrixCard = ({matrixRecord}) => {
-  console.log(`Card ${matrixRecord}`)
+const MatrixCard = ({matrixRecord, length}) => {
+  console.log({length})
   return (
     // <div className="w-full md:w-[50%]  bg-[#151515]  rounded-3xl shadow-inner shadow-[#464545]">
 
@@ -8,14 +8,14 @@ const MatrixCard = ({matrixRecord}) => {
         matrixRecord.map((item, index) => (
           <div
             key={item._id}
-            className={`w-full md:w-[50%]  shadow-lg p-6 transition duration-300 ${
+            className={` ${length===1 ? "w-full":" md:w-[50%]"} shadow-lg p-6 transition duration-300 ${
               index === 0
-                ? "border-r-[1px] border-gray-500 border-opacity-35 rounded-2xl md:rounded-l-2xl md:rounded-r-none bg-blue-600"
-                : "rounded-2xl md:rounded-l-none md:rounded-r-2xl bg-cyan-600"
+                ? `border-r-[1px] border-gray-500 border-opacity-35 ${length===1 ? "rounded-2xl":"rounded-l-2xl rounded-r-2xl md:rounded-r-none "} bg-blue-600`
+                : `${length===1 ? "rounded-2xl":"rounded-l-2xl md:rounded-l-none rounded-r-2xl"} bg-cyan-600`
             }`}
           >
             <h2 className="text-lg font-semibold text-white">
-              Slot {item.level}
+              Slot: {item.level}
             </h2>
             <p className="text-white font-semibold text-sm">
               User ID:{" "}
