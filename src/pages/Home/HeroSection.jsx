@@ -50,7 +50,7 @@ const HeroSection = () => {
               parseFloat(silverDataArray[1]?.earning || "0")
             } USDX`,
             srNo: 1,
-            task: isTaskCompleted ? "Completed" : "Wait", // or any other logic for the task property
+            task: isTaskCompleted ? "Completed" : silverDataArray[0]?.task==="closed" ? "closed":  silverDataArray[0]?.task === "open" ? "open" : silverDataArray[1]?.task, // or any other logic for the task property
           },
           ...silverDataArray.slice(2), // Include the remaining items as-is
         ];
@@ -196,8 +196,18 @@ const HeroSection = () => {
             {/* </div>
             </div> */}
 
-            <div className="w-full  flex flex-row justify-between space-x-4 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
-              <div className="w-1/2">
+            <div className="w-full flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-6 lg:mt-0 ">
+            <div className="w-full md:w-1/3">
+                <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 whitespace-nowrap">
+                  Total Users
+                </p>
+                <div className="bg-[#151515] flex items-center justify-between  p-6 rounded-2xl  shadow-inner shadow-[#464545]">
+                  <p className="text-white font-bold truncate text-2xl">
+                    {dataArray?.[0] ? dataArray?.[0]?.totalUsers : 0}
+                  </p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/3">
                 <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 whitespace-nowrap">
                   Available Balance
                 </p>
@@ -208,7 +218,7 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              <div className="w-1/2">
+              <div className="w-full md:w-1/3">
                 <p className="text-[#8A8A8A] pl-5 text-lg font-semibold pb-3 whitespace-nowrap">
                   Claimed Balance
                 </p>
